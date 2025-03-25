@@ -137,3 +137,4 @@ dist
 
 # local file
 main/playlists/*
+conf/*

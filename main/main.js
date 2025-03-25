@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron/main");
 const fs = require("fs");
 const { spawn } = require("child_process");
-const port = JSON.parse(fs.readFileSync("./settings/settings.json")).port;
+const port = JSON.parse(fs.readFileSync("./conf/settings.json")).port;
 const path = require("node:path");
 
 console.log("Electron starts");
@@ -10,7 +10,7 @@ let server;
 
 const createMainWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
+        width: 1000,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
