@@ -18,6 +18,8 @@ const createMainWindow = () => {
         resizable: false,
     });
 
+    win.setMenu(null)
+
     win.loadURL(`http://localhost:${port}/renderer/pages/main.html`);
 };
 

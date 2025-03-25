@@ -5,15 +5,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="../scripts/script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="../styles/styles.css" />
         <title>YT-Shuffler</title>
     </head>
     <body class="flex h-screen w-screen">
-        <div class="flex w-full h-full px-2">
-            <div id="leftColumn" class="w-3/5 h-full">L</div>
+        <div class="flex w-full h-full p-5">
+            <div id="leftColumn" class="w-3/5">
+                <div class="music-container flex flex-col my-2 cursor-pointer" data-id="t7zWExFJL5I">
+                    <div class="music-title">Didn't See That Coming</div>
+                    <div class="music-channel">Quinten Coblentz - Topic</div>
+                </div>
+                <div class="music-container flex flex-col my-2 cursor-pointer" data-id="BR-XgqIe_Iw">
+                    <div class="music-title">Shooters</div>
+                    <div class="music-channel">Juelz - Topic</div>
+                </div>
+                <div class="music-container flex flex-col my-2 cursor-pointer" data-id="zMtBmaq0cJA">
+                    <div class="music-title">We Are One</div>
+                    <div class="music-channel">Rameses B - Topic</div>
+                </div>
+            </div>
             <div id="rightColumn" class="w-2/5 h-full">
-                R
-                <iframe class="w-full h-1/2" id="player" type="text/html" src="https://www.youtube.com/embed/FMonlH2aF90?fs=0"></iframe>
+                <div id="mainPlayer" class="w-full h-1/1"></div>
             </div>
         </div>
     </body>
+
+    <script src="../scripts/yt-player.js"></script>
 </html>

@@ -1,5 +1,6 @@
 const fs = require("fs");
 
+// Gotta do the youtube API fetch assembly thing
 let rawPlaylist = JSON.parse(fs.readFileSync("./playlists/raw-playlist.json"));
 
 async function playlistAssembler(raw) {
@@ -28,7 +29,7 @@ async function playlistShuffler(list) {
     return shuffled;
 }
 
-async function savePlaylist(list) {
+async function savePlaylist(name, list) {
     // Name will be changed according to playlist name
     let name = "Analogous";
 
@@ -39,5 +40,6 @@ async function savePlaylist(list) {
 
 module.exports = {
     playlistAssembler,
-    playlistShuffler
+    playlistShuffler,
+    savePlaylist
 };
