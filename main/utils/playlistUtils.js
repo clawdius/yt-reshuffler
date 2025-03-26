@@ -1,7 +1,4 @@
-const fs = require("fs");
-
-// Gotta do the youtube API fetch assembly thing
-let rawPlaylist = JSON.parse(fs.readFileSync("./playlists/raw-playlist.json"));
+const fs = require("fs").promises;
 
 async function playlistAssembler(raw) {
     let cleanList = [];
@@ -18,10 +15,11 @@ async function playlistAssembler(raw) {
 }
 
 async function playlistShuffler(list) {
-    let shuffled = [], r;
+    let shuffled = [],
+        r;
 
     while (list.length != 0) {
-        r = Math.floor(Math.random() * list.length)
+        r = Math.floor(Math.random() * list.length);
         shuffled.push(list[r]);
         list.splice(r, 1);
     }
@@ -31,15 +29,18 @@ async function playlistShuffler(list) {
 
 async function savePlaylist(name, list) {
     // Name will be changed according to playlist name
-    let name = "Analogous";
+    name = "analogous";
 
-    fs.writeFile(`./playlists/${name}-shuffled.json`, JSON.stringify(list, null, 2), (e) => {
-        if (e) throw e;
-    })
+    await fs.writeFile(`./playlists/${name}-shuffled.json`, JSON.stringify(list, null, 2));
+}
+
+async function loadPlaylist(name) {
+    return JSON.parse(await fs.readFile(`./playlists/${name}-shuffled.json`));
 }
 
 module.exports = {
     playlistAssembler,
     playlistShuffler,
-    savePlaylist
+    savePlaylist,
+    loadPlaylist,
 };

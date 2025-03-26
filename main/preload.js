@@ -5,3 +5,7 @@ contextBridge.exposeInMainWorld("v", {
     chrome: () => process.versions.chrome,
     electron: () => process.versions.electron
 });
+
+contextBridge.exposeInMainWorld("playlistAPI", {
+    loadPlaylist: (name) => ipcRenderer.invoke("load-playlist", name)
+})

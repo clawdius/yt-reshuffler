@@ -1,12 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require("electron/main");
-const fs = require("fs");
+const fs = require("fs").promises;
 const { spawn } = require("child_process");
-const port = JSON.parse(fs.readFileSync("./conf/settings.json")).port;
 const path = require("node:path");
-
-console.log("Electron starts");
+const playlistUtils = require("./utils/PlaylistUtils");
 
 let server;
+let port;
 
 const createMainWindow = () => {
     const win = new BrowserWindow({
@@ -18,27 +17,37 @@ const createMainWindow = () => {
         resizable: false,
     });
 
-    win.setMenu(null)
+    win.setAutoHideMenuBar(true);
 
     win.loadURL(`http://localhost:${port}/renderer/pages/main.html`);
 };
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+    port = JSON.parse(await fs.readFile("./conf/settings.json")).port;
+
     // Create express server instance
     server = spawn("node", ["main/server/server.js"], {
         detached: false,
-        stdio: ["ignore", "pipe", "pipe"]
+        stdio: ["ignore", "pipe", "pipe"],
     });
 
     server.stdout.on("data", (d) => {
         console.log(`[SERVER] ${d.toString().trim()}`);
-    })
 
-    createMainWindow();
+        if (d.includes("Server started!")) {
+            console.log("Creating main window");
+            createMainWindow();
+        }
+    });
 });
 
 app.on("window-all-closed", () => {
-    console.log("All windows closed, exiting app & turning off express");
+    console.log("Exiting app & turning off express");
     server.kill();
     app.quit();
+});
+
+ipcMain.handle("load-playlist", async (e, name) => {
+    let results = await playlistUtils.loadPlaylist(name);
+    return results;
 });

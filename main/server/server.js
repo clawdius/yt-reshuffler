@@ -10,4 +10,5 @@ app.use("/renderer", express.static(path.join(__dirname, "../../renderer")))
 
 app.listen(port, () => {
     console.log(`Server runs on ${port}`);
+    console.log(`Server started!`);
 })
