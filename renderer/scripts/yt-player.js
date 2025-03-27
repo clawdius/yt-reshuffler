@@ -4,6 +4,13 @@ let firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 let player;
+let state;
 function onYouTubePlayerAPIReady() {
-    player = new YT.Player("mainPlayer");
+    player = new YT.Player("mainPlayer", {
+        events: {
+            "onStateChange": (e) => {
+                state = e.data;
+            },
+        },
+    });
 }

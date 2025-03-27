@@ -1,14 +1,14 @@
-const { app, BrowserWindow, ipcMain } = require("electron/main");
+const { app, BrowserWindow } = require("electron/main");
 const fs = require("fs").promises;
 const { spawn } = require("child_process");
 const path = require("node:path");
-const playlistUtils = require("./utils/PlaylistUtils");
 
-let server;
-let port;
+const { setupMainHandlers } = require("./mainHandlers.js");
+
+let server, port;
 
 const createMainWindow = () => {
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 1000,
         height: 600,
         webPreferences: {
@@ -35,6 +35,9 @@ app.whenReady().then(async () => {
         console.log(`[SERVER] ${d.toString().trim()}`);
 
         if (d.includes("Server started!")) {
+            console.log("Registering handlers");
+            setupMainHandlers();
+
             console.log("Creating main window");
             createMainWindow();
         }
@@ -45,9 +48,4 @@ app.on("window-all-closed", () => {
     console.log("Exiting app & turning off express");
     server.kill();
     app.quit();
-});
-
-ipcMain.handle("load-playlist", async (e, name) => {
-    let results = await playlistUtils.loadPlaylist(name);
-    return results;
 });
