@@ -116,7 +116,7 @@ function assignButtonsHandler() {
     // Reshuffler
     const reshuffler = document.querySelector("#reshuffleBtn");
     reshuffler.addEventListener("click", async () => {
-        let shuffledName = await window.playlistAPI.shufflePlaylist(playlistSettings.playlistName);
+        let shuffledName = await window.playlistAPI.shufflePlaylist(stateVars.playlistSettings.playlistName);
         await loadPlaylist(shuffledName);
 
         stateVars.playingBefore = null;
