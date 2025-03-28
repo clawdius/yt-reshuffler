@@ -7,5 +7,6 @@ contextBridge.exposeInMainWorld("playlistSettings", {
 contextBridge.exposeInMainWorld("playlistAPI", {
     loadPlaylist: (name) => ipcRenderer.invoke("load-playlist", name),
     changeWindowTitle: (title) => ipcRenderer.invoke("change-window-title", title),
-    shufflePlaylist: (name) => ipcRenderer.invoke("shuffle-playlist", name)
+    shufflePlaylist: (name) => ipcRenderer.invoke("shuffle-playlist", name),
+    fetchDataFromYT: (id) => ipcRenderer.invoke("fetch-data-from-YT", id)
 })

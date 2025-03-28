@@ -92,6 +92,17 @@ function assignButtonsHandler() {
     reshuffler.addEventListener("click", async () => {
         let shuffledName = await window.playlistAPI.shufflePlaylist(playlistSettings.playlistName);
         await loadPlaylist(shuffledName);
+
+        playingBefore = null;
+        playingNow = null;
+
+        player.pauseVideo();
+    });
+
+    const fetcher = document.querySelector("#fetchBtn");
+    fetcher.addEventListener("click", async () => {
+        await window.playlistAPI.fetchDataFromYT(playlistSettings.playlistID);
+        await loadPlaylist(playlistSettings.playlistName);
     });
 }
 
@@ -115,8 +126,12 @@ async function loadPlaylist(name) {
 }
 
 async function startUp() {
+
+    const last = await window.playlistSettings.getLastPlaylist()
+
     playlistSettings = {
-        playlistName: await window.playlistSettings.getLastPlaylist(),
+        playlistName: last.lastPlaylistName,
+        playlistID: last.lastPlaylistID
     };
 
     const title = document.querySelector("#playlistTitle");

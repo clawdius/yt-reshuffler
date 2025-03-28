@@ -10,30 +10,43 @@ async function fetchDataFromYT(id) {
 
     playlist.metadata = {
         name: info.items[0].snippet.title,
-        playlistId: info.items[0].id
-    }
+        playlistId: info.items[0].id,
+    };
 
     // Fetch playlist items
 
     let urlAPI = `https://www.googleapis.com/youtube/v3/playlistItems?key=${global.config.key}&part=snippet&playlistId=${id}&maxResults=50`;
     let nextPage = ``;
 
-    const resItems = await fetch(urlAPI);
-    const songs = await resItems.json();
-
     let cleanItems = [];
+    let counter = 1;
 
-    for (let d of songs.items) {
-        cleanItems.push({
-            "title": d.snippet.title,
-            "channel": d.snippet.videoOwnerChannelTitle,
-            "id": d.snippet.resourceId.videoId,
-        });
+    while (true) {
+        const resItems = await fetch(urlAPI + nextPage);
+        const songs = await resItems.json();
+
+        for (let d of songs.items) {
+            cleanItems.push({
+                "title": d.snippet.title,
+                "channel": d.snippet.videoOwnerChannelTitle,
+                "id": d.snippet.resourceId.videoId,
+            });
+        }
+
+        console.log(`Fetching playlist items from Youtube (${counter})`);
+
+        if(!songs.nextPageToken) {
+            playlist.metadata.count = songs.pageInfo.totalResults
+            console.log(`Done fetching ${playlist.metadata.count} songs`);
+            break;
+        }
+
+        nextPage = `&pageToken=${songs.nextPageToken}`;
+        counter++;
     }
 
-    playlist.songs = await shufflePlaylist(cleanItems)
-
-    return await savePlaylist(playlist.metadata.name, playlist)
+    playlist.songs = await shufflePlaylist(cleanItems);
+    return await savePlaylist(playlist.metadata.name, playlist);
 }
 
 async function shufflePlaylist(list) {
@@ -58,7 +71,7 @@ async function loadPlaylist(name) {
 }
 
 async function getLastPlaylist() {
-    return JSON.parse(await fs.readFile(`./playlists/playlist-settings.json`)).lastPlaylist;
+    return JSON.parse(await fs.readFile(`./playlists/last-playlist.json`));
 }
 
 module.exports = {
@@ -66,5 +79,5 @@ module.exports = {
     shufflePlaylist,
     savePlaylist,
     loadPlaylist,
-    getLastPlaylist
+    getLastPlaylist,
 };

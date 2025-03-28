@@ -21,8 +21,11 @@ function setupMainHandlers(handlersData) {
         playlist.songs = await playlistUtils.shufflePlaylist(playlist.songs);
 
         await playlistUtils.savePlaylist(name, playlist);
-
         return name;
+    })
+
+    ipcMain.handle("fetch-data-from-YT", async (e, id) => {
+        return await playlistUtils.fetchDataFromYT(id);
     })
 }
 
