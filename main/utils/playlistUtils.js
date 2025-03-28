@@ -1,17 +1,39 @@
 const fs = require("fs").promises;
 
-async function assemblePlaylist(raw) {
-    let cleanList = [];
+async function fetchDataFromYT(id) {
+    let playlist = {};
 
-    for (let d of raw.items) {
-        cleanList.push({
+    // Fetch playlist info
+
+    const resInfo = await fetch(`https://www.googleapis.com/youtube/v3/playlists?key=${global.config.key}&part=snippet&id=${id}`);
+    const info = await resInfo.json();
+
+    playlist.metadata = {
+        name: info.items[0].snippet.title,
+        playlistId: info.items[0].id
+    }
+
+    // Fetch playlist items
+
+    let urlAPI = `https://www.googleapis.com/youtube/v3/playlistItems?key=${global.config.key}&part=snippet&playlistId=${id}&maxResults=50`;
+    let nextPage = ``;
+
+    const resItems = await fetch(urlAPI);
+    const songs = await resItems.json();
+
+    let cleanItems = [];
+
+    for (let d of songs.items) {
+        cleanItems.push({
             "title": d.snippet.title,
             "channel": d.snippet.videoOwnerChannelTitle,
             "id": d.snippet.resourceId.videoId,
         });
     }
 
-    return cleanList;
+    playlist.songs = await shufflePlaylist(cleanItems)
+
+    return await savePlaylist(playlist.metadata.name, playlist)
 }
 
 async function shufflePlaylist(list) {
@@ -27,11 +49,8 @@ async function shufflePlaylist(list) {
     return shuffled;
 }
 
-async function savePlaylist(name, list) {
-    // Name will be changed according to playlist name
-    name = "analogous";
-
-    await fs.writeFile(`./playlists/${name}-shuffled.json`, JSON.stringify(list, null, 2));
+async function savePlaylist(name, playlist) {
+    return await fs.writeFile(`./playlists/${name}-shuffled.json`, JSON.stringify(playlist, null, 2));
 }
 
 async function loadPlaylist(name) {
@@ -43,7 +62,7 @@ async function getLastPlaylist() {
 }
 
 module.exports = {
-    assemblePlaylist,
+    fetchDataFromYT,
     shufflePlaylist,
     savePlaylist,
     loadPlaylist,

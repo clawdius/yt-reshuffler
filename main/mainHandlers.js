@@ -18,8 +18,9 @@ function setupMainHandlers(handlersData) {
 
     ipcMain.handle("shuffle-playlist", async (e, name) => {
         const playlist = await playlistUtils.loadPlaylist(name);
-        const shuffled = await playlistUtils.shufflePlaylist(playlist);
-        await playlistUtils.savePlaylist(name, shuffled);
+        playlist.songs = await playlistUtils.shufflePlaylist(playlist.songs);
+
+        await playlistUtils.savePlaylist(name, playlist);
 
         return name;
     })

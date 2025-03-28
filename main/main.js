@@ -4,8 +4,11 @@ const { spawn } = require("child_process");
 const path = require("node:path");
 
 const { setupMainHandlers } = require("./mainHandlers.js");
+const { fetchDataFromYT } = require("./utils/PlaylistUtils.js");
 
-let server, port, handlersData = {};
+let server,
+    handlersData = {};
+    global.config = {};
 
 const createMainWindow = () => {
     win = new BrowserWindow({
@@ -22,11 +25,12 @@ const createMainWindow = () => {
 
     win.setAutoHideMenuBar(true);
 
-    win.loadURL(`http://localhost:${port}/renderer/pages/main.html`);
+    win.loadURL(`http://localhost:${global.config.port}/renderer/pages/main.html`);
 };
 
 app.whenReady().then(async () => {
-    port = JSON.parse(await fs.readFile("./conf/settings.json")).port;
+    global.config.port = JSON.parse(await fs.readFile("./conf/settings.json")).port;
+    global.config.key = JSON.parse(await fs.readFile("./conf/settings.json")).key;
 
     // Create express server instance
     server = spawn("node", ["main/server/server.js"], {

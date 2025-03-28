@@ -84,7 +84,7 @@ function assignButtonsHandler() {
 }
 
 async function loadPlaylist(name) {
-    let songs = await window.playlistAPI.loadPlaylist(name);
+    let res = await window.playlistAPI.loadPlaylist(name);
 
     if (playlistContainer.innerHTML != "") {
         playlistContainer.innerHTML = "";
@@ -92,7 +92,7 @@ async function loadPlaylist(name) {
 
     let musicContainer;
 
-    for (let s of songs) {
+    for (let s of res.songs) {
         // Not-so-hacky because I don't want to use `createElement`
         musicContainer = HTMLs.musicContainer(s.title, s.channel, s.id);
         playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
