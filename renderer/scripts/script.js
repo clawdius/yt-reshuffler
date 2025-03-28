@@ -13,7 +13,7 @@ function playerController(state, playingNow) {
             mcc.removeChild(mcc.lastElementChild);
             mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
 
-            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${playlistSettings.playlistName}`);
+            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
 
             break;
         }
