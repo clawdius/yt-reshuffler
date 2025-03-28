@@ -1,6 +1,6 @@
 
 # YT-Reshuffler
-![image](https://github.com/user-attachments/assets/aebe4bee-3d95-421c-8df8-e342ef65b63d)
+![image](https://github.com/user-attachments/assets/d07736b5-7eab-4326-8c6e-ba7c3911b1bf)
 <p align=center> <i>Image does not represent final quality, because it's still Work In Progress, after all </i></p>
 
 ## Why?
