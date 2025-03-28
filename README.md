@@ -6,4 +6,4 @@
 ## Why?
 Youtube default playlist shuffler sucks, my playlist has 1000+ songs and the shuffler died before shuffling my entire playlist, so I made those online "Youtube Randomizer" thing for desktop, powered by [Electron](https://www.electronjs.org/) type shii 🔥🔥.
 
-Heavily inspired (probably the only reason) by ["Youtube Playlist Randomizer"](https://youtube-playlist-randomizer.bitbucket.io/), big thanks to whoever made that masterpiece.
+Heavily inspired <sup><sub>(probably the only reason, to be honest)</sub></sup> by ["Youtube Playlist Randomizer"](https://youtube-playlist-randomizer.bitbucket.io/), big thanks to whoever made that masterpiece.
