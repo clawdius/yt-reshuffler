@@ -169,6 +169,14 @@ function debounce(f, d) {
     };
 }
 
+function assignSearchShortcut() {
+    document.addEventListener("keydown", (e) => {
+        if(e.ctrlKey && e.key == "f") {
+            document.querySelector("input#search").focus();
+        }
+    })
+}
+
 async function startUp() {
     const last = await window.playlistSettings.getLastPlaylist();
 
@@ -188,4 +196,5 @@ window.onload = async () => {
     await loadPlaylist(stateVars.playlistSettings.playlistName);
 
     assignButtonsHandler();
+    assignSearchShortcut();
 };
