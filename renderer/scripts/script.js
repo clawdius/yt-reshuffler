@@ -1,13 +1,6 @@
 import * as HTMLs from "./HTMLs.js";
 
-let playingNow = null,
-    playingBefore = null,
-    playlistSettings = {},
-    songs;
-
-const playlistContainer = document.querySelector("#playlist"),
-    leftColumn = document.querySelector("#leftColumn"),
-    rightColumn = document.querySelector("#rightColumn");
+import { stateVars, stateElements } from "./states.js";
 
 function playerController(state, playingNow) {
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
@@ -43,30 +36,30 @@ function playerController(state, playingNow) {
 
 function changePlayer(id, musicContainer) {
     // Adjust width for the first time
-    if (leftColumn.classList.contains("w-0") && rightColumn.classList.contains("w-full")) {
-        leftColumn.classList.add("w-2/5", "pl-5");
-        leftColumn.classList.remove("w-0");
+    if (stateElements.leftColumn.classList.contains("w-0") && stateElements.rightColumn.classList.contains("w-full")) {
+        stateElements.leftColumn.classList.add("w-2/5", "pl-5");
+        stateElements.leftColumn.classList.remove("w-0");
 
-        rightColumn.classList.add("w-3/5", "pl-3", "pr-5");
-        rightColumn.classList.remove("w-full", "px-5");
+        stateElements.rightColumn.classList.add("w-3/5", "pl-3", "pr-5");
+        stateElements.rightColumn.classList.remove("w-full", "px-5");
     }
 
-    if (playingNow != null) {
-        playingBefore = playingNow;
+    if (stateVars.playingNow != null) {
+        stateVars.playingBefore = stateVars.playingNow;
     }
-    playingNow = musicContainer.dataset.id;
+    stateVars.playingNow = musicContainer.dataset.id;
 
-    if (playingNow == playingBefore) {
-        playerController(state, playingNow);
+    if (stateVars.playingNow == stateVars.playingBefore) {
+        playerController(state, stateVars.playingNow);
     }
 
-    if (playingBefore != playingNow) {
+    if (stateVars.playingBefore != stateVars.playingNow) {
         // Add playArrow to the current playing song
-        document.querySelector(`.music-container[data-id="${playingNow}"]`).insertAdjacentHTML("beforeend", HTMLs.playHTML);
+        document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`).insertAdjacentHTML("beforeend", HTMLs.playHTML);
 
         // Remove the playArrow on previous song
-        if (playingBefore != null) {
-            const mcb = document.querySelector(`.music-container[data-id="${playingBefore}"]`);
+        if (stateVars.playingBefore != null) {
+            const mcb = document.querySelector(`.music-container[data-id="${stateVars.playingBefore}"]`);
             mcb.removeChild(mcb.lastElementChild);
         }
 
@@ -80,7 +73,7 @@ function changePlayer(id, musicContainer) {
 function search(n) {
     if (n != "") {
         let name = n.toLowerCase();
-        for (let d of songs) {
+        for (let d of stateVars.songs) {
             if (!d.dataset.title.toLowerCase().includes(name)) {
                 d.classList.add("hidden");
             } else {
@@ -88,16 +81,16 @@ function search(n) {
             }
         }
     } else {
-        for (let d of songs) {
+        for (let d of stateVars.songs) {
             d.classList.remove("hidden");
         }
     }
 }
 
 function assignSongsContainer() {
-    songs = document.querySelectorAll(".music-container");
+    stateVars.songs = document.querySelectorAll(".music-container");
 
-    for (let s of songs) {
+    for (let s of stateVars.songs) {
         s.addEventListener("click", (e) => {
             changePlayer(s.dataset.id, e.currentTarget);
         });
@@ -126,16 +119,16 @@ function assignButtonsHandler() {
         let shuffledName = await window.playlistAPI.shufflePlaylist(playlistSettings.playlistName);
         await loadPlaylist(shuffledName);
 
-        playingBefore = null;
-        playingNow = null;
+        stateVars.playingBefore = null;
+        stateVars.playingNow = null;
 
         // Resets column width
-        if (leftColumn.classList.contains("w-2/5") && rightColumn.classList.contains("w-3/5")) {
-            leftColumn.classList.remove("w-2/5", "pl-5");
-            leftColumn.classList.add("w-0");
+        if (stateElements.leftColumn.classList.contains("w-2/5") && stateElements.rightColumn.classList.contains("w-3/5")) {
+            stateElements.leftColumn.classList.remove("w-2/5", "pl-5");
+            stateElements.leftColumn.classList.add("w-0");
 
-            rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
-            rightColumn.classList.add("w-full", "px-5");
+            stateElements.rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
+            stateElements.rightColumn.classList.add("w-full", "px-5");
         }
 
         // Resets search
@@ -148,8 +141,8 @@ function assignButtonsHandler() {
 async function loadPlaylist(name) {
     let res = await window.playlistAPI.loadPlaylist(name);
 
-    if (playlistContainer.innerHTML != "") {
-        playlistContainer.innerHTML = "";
+    if (stateElements.playlistContainer.innerHTML != "") {
+        stateElements.playlistContainer.innerHTML = "";
     }
 
     let musicContainer;
@@ -157,7 +150,7 @@ async function loadPlaylist(name) {
     for (let s of res.songs) {
         // Not-so-hacky because I don't want to use `createElement`
         musicContainer = HTMLs.musicContainer(s.title, s.channel, s.id);
-        playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
+        stateElements.playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
     }
 
     // Assign containers every playlist load
@@ -179,20 +172,20 @@ function debounce(f, d) {
 async function startUp() {
     const last = await window.playlistSettings.getLastPlaylist();
 
-    playlistSettings = {
+    stateVars.playlistSettings = {
         playlistName: last.lastPlaylistName,
         playlistID: last.lastPlaylistID,
     };
 
     const title = document.querySelector("#playlistTitle");
-    title.innerHTML = playlistSettings.playlistName;
+    title.innerHTML = stateVars.playlistSettings.playlistName;
 
-    window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${playlistSettings.playlistName}`);
+    window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
 }
 
 window.onload = async () => {
     await startUp();
-    await loadPlaylist(playlistSettings.playlistName);
+    await loadPlaylist(stateVars.playlistSettings.playlistName);
 
     assignButtonsHandler();
 };
