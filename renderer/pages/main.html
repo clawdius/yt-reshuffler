@@ -5,15 +5,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <link rel="stylesheet" href="../styles/styles.css" />
-        <title>YT-Shuffler</title>
     </head>
     <body class="flex h-screen w-screen">
         <div class="flex w-full h-full py-5">
-            <div id="leftColumn" class="w-2/5 h-full pl-5">
-                <div id="mainPlayer" class="w-full h-full"></div>
+            <div id="leftColumn" class="w-2/5 h-full pl-5 flex items-center">
+                <div id="mainPlayerContainer" class="w-full h-8/10">
+                    <div id="mainPlayer" class="w-full h-full"></div>
+                </div>
             </div>
-            <div id="rightColumn" class="w-3/5 h-1/1 pl-3 pr-5">
-                <div id="playlist" class="h-1/1 overflow-y-auto"></div>
+            <div id="rightColumn" class="w-3/5 h-full pl-3 pr-5">
+                <div id="utility" class="h-1/10 flex items-center flex-row-reverse">
+                    <div id="reshuffleBtn" class="control-Btn h-2/3 w-fit">
+                        <img src="/renderer/elements/shuffle-icon.svg" class="h-full" />
+                    </div>
+                </div>
+                <div id="playlist" class="h-8/10 overflow-y-auto"></div>
+                <div id="playerControl" class="h-1/10"></div>
             </div>
         </div>
     </body>

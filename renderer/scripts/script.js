@@ -1,7 +1,10 @@
 import * as HTMLs from "./HTMLs.js";
 
 let playingNow = null,
-    playingBefore = null;
+    playingBefore = null,
+    playlistSettings = {};
+
+const playlistContainer = document.querySelector("#playlist");
 
 function playerController(state, playingNow) {
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
@@ -14,6 +17,8 @@ function playerController(state, playingNow) {
             mcc.removeChild(mcc.lastElementChild);
             mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
 
+            window.playlistAPI.changeWindowTitle(`YT-Reshuffler`);
+
             break;
         }
         case 2: {
@@ -23,7 +28,12 @@ function playerController(state, playingNow) {
             mcc.removeChild(mcc.lastElementChild);
             mcc.insertAdjacentHTML("beforeend", HTMLs.playHTML);
 
+            window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
+
             break;
+        }
+        default: {
+            console.log("no info");
         }
     }
 }
@@ -48,6 +58,8 @@ function changePlayer(id, musicContainer) {
             mcb.removeChild(mcb.lastElementChild);
         }
 
+        window.playlistAPI.changeWindowTitle(`Now Playing - ${musicContainer.dataset.title}`);
+
         player.loadVideoById(id);
         player.playVideo();
     }
@@ -62,28 +74,45 @@ function assignSongsContainer() {
     }
 }
 
+function assignButtonsHandler() {
+    // Reshuffler
+    const reshuffler = document.querySelector("#reshuffleBtn");
+    reshuffler.addEventListener("click", async () => {
+        let shuffledName = await window.playlistAPI.shufflePlaylist(playlistSettings.lastPlaylist);
+        await loadPlaylist(shuffledName);
+    });
+}
+
 async function loadPlaylist(name) {
     let songs = await window.playlistAPI.loadPlaylist(name);
-    let musicContainer;
 
-    const playlistContainer = document.querySelector("#playlist");
+    if (playlistContainer.innerHTML != "") {
+        playlistContainer.innerHTML = "";
+    }
+
+    let musicContainer;
 
     for (let s of songs) {
         // Not-so-hacky because I don't want to use `createElement`
-        musicContainer = `
-        <div class="music-container flex my-2 py-2 cursor-pointer justify-between" data-id="${s.id}">
-            <div class="flex flex-col">
-                <div class="music-title">${s.title}</div>
-                <div class="music-channel">${s.channel}</div>
-            </div>
-        </div>
-        `;
-
+        musicContainer = HTMLs.musicContainer(s.title, s.channel, s.id);
         playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
     }
+
+    // Assign containers every playlist load
+    assignSongsContainer()
+}
+
+async function startUp() {
+    playlistSettings = {
+        lastPlaylist: await window.playlistSettings.getLastPlaylist(),
+    };
+
+    window.playlistAPI.changeWindowTitle(`YT-Reshuffler`);
 }
 
 window.onload = async () => {
-    await loadPlaylist("analogous");
-    assignSongsContainer();
+    await startUp();
+    await loadPlaylist(playlistSettings.lastPlaylist);
+
+    assignButtonsHandler();
 };

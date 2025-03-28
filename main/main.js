@@ -5,7 +5,7 @@ const path = require("node:path");
 
 const { setupMainHandlers } = require("./mainHandlers.js");
 
-let server, port;
+let server, port, handlersData = {};
 
 const createMainWindow = () => {
     win = new BrowserWindow({
@@ -16,6 +16,9 @@ const createMainWindow = () => {
         },
         resizable: false,
     });
+
+    // Bundle the win object to the handlers
+    handlersData.mainWindow = win;
 
     win.setAutoHideMenuBar(true);
 
@@ -35,11 +38,11 @@ app.whenReady().then(async () => {
         console.log(`[SERVER] ${d.toString().trim()}`);
 
         if (d.includes("Server started!")) {
-            console.log("Registering handlers");
-            setupMainHandlers();
-
             console.log("Creating main window");
             createMainWindow();
+
+            console.log("Registering handlers");
+            setupMainHandlers(handlersData);
         }
     });
 });

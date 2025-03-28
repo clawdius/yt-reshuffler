@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 
-async function playlistAssembler(raw) {
+async function assemblePlaylist(raw) {
     let cleanList = [];
 
     for (let d of raw.items) {
@@ -14,7 +14,7 @@ async function playlistAssembler(raw) {
     return cleanList;
 }
 
-async function playlistShuffler(list) {
+async function shufflePlaylist(list) {
     let shuffled = [],
         r;
 
@@ -38,9 +38,14 @@ async function loadPlaylist(name) {
     return JSON.parse(await fs.readFile(`./playlists/${name}-shuffled.json`));
 }
 
+async function getLastPlaylist() {
+    return JSON.parse(await fs.readFile(`./playlists/playlist-settings.json`)).lastPlaylist;
+}
+
 module.exports = {
-    playlistAssembler,
-    playlistShuffler,
+    assemblePlaylist,
+    shufflePlaylist,
     savePlaylist,
     loadPlaylist,
+    getLastPlaylist
 };
