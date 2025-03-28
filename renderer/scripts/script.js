@@ -4,7 +4,9 @@ let playingNow = null,
     playingBefore = null,
     playlistSettings = {};
 
-const playlistContainer = document.querySelector("#playlist");
+const playlistContainer = document.querySelector("#playlist"),
+    leftColumn = document.querySelector("#leftColumn"),
+    rightColumn = document.querySelector("#rightColumn");
 
 function playerController(state, playingNow) {
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
@@ -17,7 +19,7 @@ function playerController(state, playingNow) {
             mcc.removeChild(mcc.lastElementChild);
             mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
 
-            window.playlistAPI.changeWindowTitle(`YT-Reshuffler`);
+            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${playlistSettings.playlistName}`);
 
             break;
         }
@@ -39,6 +41,16 @@ function playerController(state, playingNow) {
 }
 
 function changePlayer(id, musicContainer) {
+    
+    // Adjust width for the first time
+    if(leftColumn.classList.contains("w-0") && rightColumn.classList.contains("w-full")){
+        leftColumn.classList.add("w-2/5", "pl-5");
+        leftColumn.classList.remove("w-0");
+
+        rightColumn.classList.add("w-3/5", "pl-3", "pr-5");
+        rightColumn.classList.remove("w-full", "px-5");
+    }
+
     if (playingNow != null) {
         playingBefore = playingNow;
     }
@@ -78,7 +90,7 @@ function assignButtonsHandler() {
     // Reshuffler
     const reshuffler = document.querySelector("#reshuffleBtn");
     reshuffler.addEventListener("click", async () => {
-        let shuffledName = await window.playlistAPI.shufflePlaylist(playlistSettings.lastPlaylist);
+        let shuffledName = await window.playlistAPI.shufflePlaylist(playlistSettings.playlistName);
         await loadPlaylist(shuffledName);
     });
 }
@@ -99,20 +111,23 @@ async function loadPlaylist(name) {
     }
 
     // Assign containers every playlist load
-    assignSongsContainer()
+    assignSongsContainer();
 }
 
 async function startUp() {
     playlistSettings = {
-        lastPlaylist: await window.playlistSettings.getLastPlaylist(),
+        playlistName: await window.playlistSettings.getLastPlaylist(),
     };
 
-    window.playlistAPI.changeWindowTitle(`YT-Reshuffler`);
+    const title = document.querySelector("#playlistTitle");
+    title.innerHTML = playlistSettings.playlistName;
+
+    window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${playlistSettings.playlistName}`);
 }
 
 window.onload = async () => {
     await startUp();
-    await loadPlaylist(playlistSettings.lastPlaylist);
+    await loadPlaylist(playlistSettings.playlistName);
 
     assignButtonsHandler();
 };
