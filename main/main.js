@@ -4,7 +4,6 @@ const { spawn } = require("child_process");
 const path = require("node:path");
 
 const { setupMainHandlers } = require("./mainHandlers.js");
-const { fetchDataFromYT } = require("./utils/PlaylistUtils.js");
 
 let server,
     handlersData = {};

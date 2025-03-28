@@ -2,7 +2,8 @@ import * as HTMLs from "./HTMLs.js";
 
 let playingNow = null,
     playingBefore = null,
-    playlistSettings = {};
+    playlistSettings = {},
+    songs;
 
 const playlistContainer = document.querySelector("#playlist"),
     leftColumn = document.querySelector("#leftColumn"),
@@ -41,9 +42,8 @@ function playerController(state, playingNow) {
 }
 
 function changePlayer(id, musicContainer) {
-    
     // Adjust width for the first time
-    if(leftColumn.classList.contains("w-0") && rightColumn.classList.contains("w-full")){
+    if (leftColumn.classList.contains("w-0") && rightColumn.classList.contains("w-full")) {
         leftColumn.classList.add("w-2/5", "pl-5");
         leftColumn.classList.remove("w-0");
 
@@ -77,8 +77,26 @@ function changePlayer(id, musicContainer) {
     }
 }
 
+function search(n) {
+    if (n != "") {
+        let name = n.toLowerCase();
+        for (let d of songs) {
+            if (!d.dataset.title.toLowerCase().includes(name)) {
+                d.classList.add("hidden");
+            } else {
+                d.classList.remove("hidden");
+            }
+        }
+    } else {
+        for (let d of songs) {
+            d.classList.remove("hidden");
+        }
+    }
+}
+
 function assignSongsContainer() {
-    let songs = document.querySelectorAll(".music-container");
+    songs = document.querySelectorAll(".music-container");
+
     for (let s of songs) {
         s.addEventListener("click", (e) => {
             changePlayer(s.dataset.id, e.currentTarget);
@@ -87,6 +105,21 @@ function assignSongsContainer() {
 }
 
 function assignButtonsHandler() {
+    
+    // Fetcher
+    const fetcher = document.querySelector("#fetchBtn");
+    fetcher.addEventListener("click", async () => {
+        await window.playlistAPI.fetchDataFromYT(playlistSettings.playlistID);
+        await loadPlaylist(playlistSettings.playlistName);
+    });
+
+    // Search
+    const searchInput = document.querySelector("input#search");
+    searchInput.addEventListener("keyup", (e) => {
+        let searchInput = debounce(search, 200);
+        searchInput(e.target.value);
+    });
+    
     // Reshuffler
     const reshuffler = document.querySelector("#reshuffleBtn");
     reshuffler.addEventListener("click", async () => {
@@ -96,13 +129,19 @@ function assignButtonsHandler() {
         playingBefore = null;
         playingNow = null;
 
-        player.pauseVideo();
-    });
+        // Resets column width
+        if (leftColumn.classList.contains("w-2/5") && rightColumn.classList.contains("w-3/5")) {
+            leftColumn.classList.remove("w-2/5", "pl-5");
+            leftColumn.classList.add("w-0");
 
-    const fetcher = document.querySelector("#fetchBtn");
-    fetcher.addEventListener("click", async () => {
-        await window.playlistAPI.fetchDataFromYT(playlistSettings.playlistID);
-        await loadPlaylist(playlistSettings.playlistName);
+            rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
+            rightColumn.classList.add("w-full", "px-5");
+        }
+
+        // Resets search
+        searchInput.value = "";
+
+        player.pauseVideo();
     });
 }
 
@@ -125,13 +164,24 @@ async function loadPlaylist(name) {
     assignSongsContainer();
 }
 
-async function startUp() {
+// Utils
 
-    const last = await window.playlistSettings.getLastPlaylist()
+function debounce(f, d) {
+    let timer;
+    return function (...a) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            f.apply(this, a);
+        }, d);
+    };
+}
+
+async function startUp() {
+    const last = await window.playlistSettings.getLastPlaylist();
 
     playlistSettings = {
         playlistName: last.lastPlaylistName,
-        playlistID: last.lastPlaylistID
+        playlistID: last.lastPlaylistID,
     };
 
     const title = document.querySelector("#playlistTitle");
