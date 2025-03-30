@@ -11,25 +11,23 @@ function playerController(state, playingNow) {
             player.pauseVideo();
 
             mcc.removeChild(mcc.lastElementChild);
-            mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
+            mcc.insertAdjacentHTML("beforeend", HTMLs.playHTML);
 
             window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
 
             break;
         }
+        case 0:
         case 2: {
-            // Playing a paused video
+            // Playing a paused / stopped video
             player.playVideo();
 
             mcc.removeChild(mcc.lastElementChild);
-            mcc.insertAdjacentHTML("beforeend", HTMLs.playHTML);
+            mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
 
             window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
 
             break;
-        }
-        default: {
-            console.log("no info");
         }
     }
 }
@@ -50,7 +48,7 @@ function changePlayer(id, musicContainer) {
     stateVars.playingNow = musicContainer.dataset.id;
 
     if (stateVars.playingNow == stateVars.playingBefore) {
-        playerController(state, stateVars.playingNow);
+        playerController(playerState, stateVars.playingNow);
     }
 
     if (stateVars.playingBefore != stateVars.playingNow) {
@@ -98,7 +96,6 @@ function assignSongsContainer() {
 }
 
 function assignButtonsHandler() {
-    
     // Fetcher
     const fetcher = document.querySelector("#fetchBtn");
     fetcher.addEventListener("click", async () => {
@@ -112,7 +109,7 @@ function assignButtonsHandler() {
         let searchInput = debounce(search, 200);
         searchInput(e.target.value);
     });
-    
+
     // Reshuffler
     const reshuffler = document.querySelector("#reshuffleBtn");
     reshuffler.addEventListener("click", async () => {
@@ -169,12 +166,18 @@ function debounce(f, d) {
     };
 }
 
-function assignSearchShortcut() {
+function assignCustomShortcuts() {
     document.addEventListener("keydown", (e) => {
-        if(e.ctrlKey && e.key == "f") {
+        if (e.ctrlKey && e.key == "f") {
             document.querySelector("input#search").focus();
         }
-    })
+
+        if (e.key == " " && document.activeElement != document.querySelector("input#search")) {
+            if (stateVars.playingNow != null) {
+                playerController(playerState, stateVars.playingNow);
+            }
+        }
+    });
 }
 
 async function startUp() {
@@ -196,5 +199,5 @@ window.onload = async () => {
     await loadPlaylist(stateVars.playlistSettings.playlistName);
 
     assignButtonsHandler();
-    assignSearchShortcut();
+    assignCustomShortcuts();
 };

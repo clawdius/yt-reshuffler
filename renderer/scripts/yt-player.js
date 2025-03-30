@@ -4,7 +4,7 @@ let firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 let player;
-let state;
+let playerState;
 function onYouTubePlayerAPIReady() {
     player = new YT.Player("mainPlayer", {
         playerVars: {
@@ -13,7 +13,7 @@ function onYouTubePlayerAPIReady() {
         },
         events: {
             "onStateChange": (e) => {
-                state = e.data;
+                playerState = e.data;
             },
         },
     });
