@@ -3,6 +3,7 @@ import * as HTMLs from "./HTMLs.js";
 import { stateVars, stateElements } from "./states.js";
 
 function playerController(state, playingNow) {
+
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
 
     switch (state) {
@@ -45,6 +46,7 @@ function changePlayer(id, musicContainer) {
     if (stateVars.playingNow != null) {
         stateVars.playingBefore = stateVars.playingNow;
     }
+
     stateVars.playingNow = musicContainer.dataset.id;
 
     if (stateVars.playingNow == stateVars.playingBefore) {
@@ -52,10 +54,11 @@ function changePlayer(id, musicContainer) {
     }
 
     if (stateVars.playingBefore != stateVars.playingNow) {
-        // Add playArrow to the current playing song
-        document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`).insertAdjacentHTML("beforeend", HTMLs.playHTML);
+        // Add pauseIcon to the current playing song
+        const mcc = document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`);
+        mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
 
-        // Remove the playArrow on previous song
+        // Remove the pauseIcon on previous song
         if (stateVars.playingBefore != null) {
             const mcb = document.querySelector(`.music-container[data-id="${stateVars.playingBefore}"]`);
             mcb.removeChild(mcb.lastElementChild);
@@ -173,6 +176,7 @@ function assignCustomShortcuts() {
         }
 
         if (e.key == " " && document.activeElement != document.querySelector("input#search")) {
+            e.preventDefault();
             if (stateVars.playingNow != null) {
                 playerController(playerState, stateVars.playingNow);
             }
