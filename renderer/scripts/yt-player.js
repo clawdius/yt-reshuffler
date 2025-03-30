@@ -7,6 +7,10 @@ let player;
 let state;
 function onYouTubePlayerAPIReady() {
     player = new YT.Player("mainPlayer", {
+        playerVars: {
+            rel: 0,
+            disablekb: 1
+        },
         events: {
             "onStateChange": (e) => {
                 state = e.data;
