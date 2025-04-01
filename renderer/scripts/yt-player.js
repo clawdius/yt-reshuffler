@@ -9,11 +9,11 @@ function onYouTubePlayerAPIReady() {
     player = new YT.Player("mainPlayer", {
         playerVars: {
             rel: 0,
-            disablekb: 1
+            disablekb: 1,
         },
         events: {
             "onStateChange": (e) => {
-                playerState = e.data;
+                e.data != 3 ? window.playerController(e.data, window.playerController.playingNow, true) : null;
             },
         },
     });

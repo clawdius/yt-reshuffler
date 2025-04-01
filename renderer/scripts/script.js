@@ -2,31 +2,33 @@ import * as HTMLs from "./HTMLs.js";
 
 import { stateVars, stateElements } from "./states.js";
 
-function playerController(state, playingNow) {
-
+export function playerController(state, playingNow, embed) {
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
 
     switch (state) {
         case 1: {
             // Pausing a played video
-            player.pauseVideo();
+            embed ? null : player.pauseVideo();
 
             mcc.removeChild(mcc.lastElementChild);
-            mcc.insertAdjacentHTML("beforeend", HTMLs.playHTML);
+            mcc.insertAdjacentHTML("beforeend", embed ? HTMLs.pauseHTML : HTMLs.playHTML);
 
-            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
+            embed ? 
+            window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) :
+            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`)
 
             break;
         }
-        case 0:
         case 2: {
             // Playing a paused / stopped video
-            player.playVideo();
+            embed ? null : player.playVideo();
 
             mcc.removeChild(mcc.lastElementChild);
-            mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
+            mcc.insertAdjacentHTML("beforeend", embed ? HTMLs.playHTML : HTMLs.pauseHTML);
 
-            window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
+            embed ? 
+            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`) :
+            window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) 
 
             break;
         }
@@ -50,7 +52,7 @@ function changePlayer(id, musicContainer) {
     stateVars.playingNow = musicContainer.dataset.id;
 
     if (stateVars.playingNow == stateVars.playingBefore) {
-        playerController(playerState, stateVars.playingNow);
+        playerController(player.getPlayerState(), stateVars.playingNow, false);
     }
 
     if (stateVars.playingBefore != stateVars.playingNow) {
@@ -68,23 +70,6 @@ function changePlayer(id, musicContainer) {
 
         player.loadVideoById(id);
         player.playVideo();
-    }
-}
-
-function search(n) {
-    if (n != "") {
-        let name = n.toLowerCase();
-        for (let d of stateVars.songs) {
-            if (!d.dataset.title.toLowerCase().includes(name)) {
-                d.classList.add("hidden");
-            } else {
-                d.classList.remove("hidden");
-            }
-        }
-    } else {
-        for (let d of stateVars.songs) {
-            d.classList.remove("hidden");
-        }
     }
 }
 
@@ -107,7 +92,7 @@ function assignButtonsHandler() {
         fetcher.removeEventListener("click", fetcherHandler);
         await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
         await loadPlaylist(stateVars.playlistSettings.playlistName).then(() => {
-            fetcher.addEventListener("click", fetcherHandler)
+            fetcher.addEventListener("click", fetcherHandler);
         });
     }
     fetcher.addEventListener("click", fetcherHandler);
@@ -175,6 +160,23 @@ function debounce(f, d) {
     };
 }
 
+function search(n) {
+    if (n != "") {
+        let name = n.toLowerCase();
+        for (let d of stateVars.songs) {
+            if (!d.dataset.title.toLowerCase().includes(name)) {
+                d.classList.add("hidden");
+            } else {
+                d.classList.remove("hidden");
+            }
+        }
+    } else {
+        for (let d of stateVars.songs) {
+            d.classList.remove("hidden");
+        }
+    }
+}
+
 function assignCustomShortcuts() {
     document.addEventListener("keydown", (e) => {
         if (e.ctrlKey && e.key == "f") {
@@ -184,7 +186,7 @@ function assignCustomShortcuts() {
         if (e.key == " " && document.activeElement != document.querySelector("input#search")) {
             e.preventDefault();
             if (stateVars.playingNow != null) {
-                playerController(playerState, stateVars.playingNow);
+                playerController(player.getPlayerState(), stateVars.playingNow);
             }
         }
     });
@@ -200,6 +202,12 @@ async function startUp() {
 
     const title = document.querySelector("#playlistTitle");
     title.innerHTML = stateVars.playlistSettings.playlistName;
+
+    // Register the function and variables to global window
+    window.playerController = playerController;
+    Object.defineProperty(window.playerController, "playingNow", {
+        get: () => stateVars.playingNow,
+    });
 
     window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
 }
