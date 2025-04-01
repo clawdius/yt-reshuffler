@@ -7,7 +7,7 @@ export function assignSongsContainer() {
 
     for (let s of stateVars.songs) {
         s.addEventListener("click", (e) => {
-            changePlayer(s.dataset.id, e.currentTarget);
+            changePlayer(e.currentTarget);
         });
     }
 }

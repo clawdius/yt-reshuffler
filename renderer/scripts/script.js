@@ -1,10 +1,11 @@
 import { stateVars } from "./states.js";
 import { assignHandlers } from "./handlers.js";
-import { loadPlaylist, playerController } from "./controllers.js";
+import { loadPlaylist, playerController, playNext } from "./controllers.js";
 
 // Utils
 
 async function startUp() {
+    // Set first loaded playlist
     const last = await window.playlistSettings.getLastPlaylist();
 
     stateVars.playlistSettings = {
@@ -17,6 +18,7 @@ async function startUp() {
 
     // Register the function and variables to global window
     window.playerController = playerController;
+    window.playerController.playNext = playNext;
     Object.defineProperty(window.playerController, "playingNow", {
         get: () => stateVars.playingNow,
     });

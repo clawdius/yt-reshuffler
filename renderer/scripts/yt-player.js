@@ -10,11 +10,20 @@ function onYouTubePlayerAPIReady() {
         playerVars: {
             rel: 0,
             disablekb: 1,
-            fs: 0
+            fs: 0,
         },
         events: {
             "onStateChange": (e) => {
-                e.data != 3 ? window.playerController(e.data, window.playerController.playingNow, true) : null;
+                if (e.data == 1 || e.data == 2) {
+                    window.playerController(e.data, window.playerController.playingNow, true);
+                }
+
+                if (e.data == 0) {
+                    window.playerController.playNext();
+                }
+            },
+            "onError": (e) => {
+                setTimeout(window.playerController.playNext, 1000);
             },
         },
     });

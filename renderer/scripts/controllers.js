@@ -14,9 +14,7 @@ export function playerController(state, playingNow, embed) {
             mcc.removeChild(mcc.lastElementChild);
             mcc.insertAdjacentHTML("beforeend", embed ? HTMLs.pauseHTML : HTMLs.playHTML);
 
-            embed ? 
-            window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) :
-            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`)
+            embed ? window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) : window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
 
             break;
         }
@@ -27,17 +25,16 @@ export function playerController(state, playingNow, embed) {
             mcc.removeChild(mcc.lastElementChild);
             mcc.insertAdjacentHTML("beforeend", embed ? HTMLs.playHTML : HTMLs.pauseHTML);
 
-            embed ? 
-            window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`) :
-            window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) 
+            embed ? window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`) : window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
 
             break;
         }
     }
 }
 
-export function changePlayer(id, musicContainer) {
+export function changePlayer(musicContainer) {
     // Adjust width for the first time
+
     if (stateElements.leftColumn.classList.contains("w-0") && stateElements.rightColumn.classList.contains("w-full")) {
         stateElements.leftColumn.classList.add("w-2/5", "pl-5");
         stateElements.leftColumn.classList.remove("w-0");
@@ -70,7 +67,7 @@ export function changePlayer(id, musicContainer) {
 
         window.playlistAPI.changeWindowTitle(`Now Playing - ${musicContainer.dataset.title}`);
 
-        player.loadVideoById(id);
+        player.loadVideoById(musicContainer.dataset.id);
         player.playVideo();
     }
 }
@@ -92,4 +89,22 @@ export async function loadPlaylist(name) {
 
     // Assign containers every playlist load
     assignSongsContainer();
+}
+
+function getCurrentMusicPosition() {
+    let pos = 0;
+
+    while(true) {
+        if(stateVars.songs[pos].dataset.id == stateVars.playingNow) {
+            return pos;
+        }
+
+        pos++;
+    }
+}
+
+export function playNext() {
+    let curr = getCurrentMusicPosition();
+    curr == stateVars.songs.length-1 ? curr = -1 : curr;
+    changePlayer(stateVars.songs[curr+1])
 }
