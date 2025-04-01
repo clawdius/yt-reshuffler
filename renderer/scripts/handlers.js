@@ -58,7 +58,6 @@ function assignButtons() {
     });
 }
 
-
 function assignCustomShortcuts() {
     document.addEventListener("keydown", (e) => {
         if (e.ctrlKey && e.key == "f") {
