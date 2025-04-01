@@ -102,8 +102,8 @@ function assignButtonsHandler() {
     // Fetcher
     const fetcher = document.querySelector("#fetchBtn");
     fetcher.addEventListener("click", async () => {
-        await window.playlistAPI.fetchDataFromYT(playlistSettings.playlistID);
-        await loadPlaylist(playlistSettings.playlistName);
+        await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
+        await loadPlaylist(stateVars.playlistSettings.playlistName);
     });
 
     // Search
