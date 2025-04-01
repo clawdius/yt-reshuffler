@@ -101,10 +101,16 @@ function assignSongsContainer() {
 function assignButtonsHandler() {
     // Fetcher
     const fetcher = document.querySelector("#fetchBtn");
-    fetcher.addEventListener("click", async () => {
+
+    // Prevent multiple clicks when fetching
+    async function fetcherHandler() {
+        fetcher.removeEventListener("click", fetcherHandler);
         await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
-        await loadPlaylist(stateVars.playlistSettings.playlistName);
-    });
+        await loadPlaylist(stateVars.playlistSettings.playlistName).then(() => {
+            fetcher.addEventListener("click", fetcherHandler)
+        });
+    }
+    fetcher.addEventListener("click", fetcherHandler);
 
     // Search
     const searchInput = document.querySelector("input#search");
