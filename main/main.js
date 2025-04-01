@@ -11,7 +11,7 @@ let server,
 
 const createMainWindow = () => {
     win = new BrowserWindow({
-        width: 1000,
+        width: 960,
         height: 600,
         icon: path.join(__dirname, "../icon.png"),
         webPreferences: {

@@ -29,13 +29,15 @@ body {
     border-radius: var(--container-radius);
 }
 
+.music-position {
+    font-size: 8pt;
+}
+
 .music-title {
-    margin: 0 0 0 10px;
     font-size: 16pt;
 }
 
 .music-channel {
-    margin: 0 0 0 10px;
     font-size: 10pt;
 }
 

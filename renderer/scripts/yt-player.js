@@ -15,7 +15,7 @@ function onYouTubePlayerAPIReady() {
         events: {
             "onStateChange": (e) => {
                 if (e.data == 1 || e.data == 2) {
-                    window.playerController(e.data, window.playerController.playingNow, true);
+                    window.playerController.playingNow ? window.playerController(e.data, window.playerController.playingNow, true) : null;
                 }
 
                 if (e.data == 0) {

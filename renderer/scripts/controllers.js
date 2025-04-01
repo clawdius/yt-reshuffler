@@ -80,11 +80,13 @@ export async function loadPlaylist(name) {
     }
 
     let musicContainer;
+    let pos = 1;
 
     for (let s of res.songs) {
         // Not-so-hacky because I don't want to use `createElement`
-        musicContainer = HTMLs.musicContainer(s.title, s.channel, s.id);
+        musicContainer = HTMLs.musicContainer(s.title, s.channel, s.id, pos);
         stateElements.playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
+        pos++;
     }
 
     // Assign containers every playlist load
