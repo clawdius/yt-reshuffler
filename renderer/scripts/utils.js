@@ -13,17 +13,27 @@ export function debounce(f, d) {
 export function search(n) {
     if (n != "") {
         let query = n.toLowerCase();
-        if (n.charAt(0) == ":") {
+        if (n.substring(0, 2) == "p:") {
             // Search based on position
             for (let d of stateVars.songs) {
-                if (!d.dataset.pos.toLowerCase().includes(query.substring(1))) {
+                if (!d.dataset.pos.toLowerCase().includes(query.substring(2))) {
+                    d.classList.add("hidden");
+                } else {
+                    d.classList.remove("hidden");
+                }
+            }
+        }
+        if (n.substring(0, 2) == "a:") {
+            // Search based on channel name
+            for (let d of stateVars.songs) {
+                if (!d.dataset.channel.toLowerCase().includes(query.substring(2))) {
                     d.classList.add("hidden");
                 } else {
                     d.classList.remove("hidden");
                 }
             }
         } else {
-            // Search based on name
+            // Search based on songs name
             for (let d of stateVars.songs) {
                 if (!d.dataset.title.toLowerCase().includes(query)) {
                     d.classList.add("hidden");
