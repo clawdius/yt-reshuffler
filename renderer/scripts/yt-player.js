@@ -10,6 +10,7 @@ function onYouTubePlayerAPIReady() {
         playerVars: {
             rel: 0,
             disablekb: 1,
+            fs: 0
         },
         events: {
             "onStateChange": (e) => {
