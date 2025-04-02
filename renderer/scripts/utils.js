@@ -22,7 +22,7 @@ export function search(n) {
                     d.classList.remove("hidden");
                 }
             }
-        }
+        } else
         if (n.substring(0, 2) == "a:") {
             // Search based on channel name
             for (let d of stateVars.songs) {
