@@ -18,6 +18,7 @@ export function playerController(state, playingNow, embed) {
 
             break;
         }
+        case 3:
         case 2: {
             // Playing a paused / stopped video
             embed ? null : player.playVideo();
