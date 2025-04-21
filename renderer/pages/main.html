@@ -8,13 +8,14 @@
     </head>
     <body class="flex h-screen w-screen">
         <div class="flex flex-col w-full h-full py-5">
-            <div id="top" class="flex px-5 w-full h-1/10">
+            <div id="top" class="flex px-5 w-full h-1/10 items-center">
                 <div id="playlistInfo" class="flex items-center w-2/5">
                     <img src="/renderer/assets/playlist-icon.svg" class="h-2/3 mr-2 mt-1" />
                     <div id="playlistTitle" class="cursor-default"></div>
                 </div>
-                <div id="searchContainer" class="flex items-center w-1/5 pl-3">
-                    <input type="text" id="search" placeholder="Search..">
+                <div id="searchContainer" class="flex items-center w-1/5 pl-1 ml-3 h-fit">
+                    <input type="text" id="search" placeholder="Search.." class="w-9/10" />
+                    <img id="clearSearch" src="/renderer/assets/clear-icon.svg" class="h-1/2 hidden cursor-pointer" />
                 </div>
                 <div id="utility" class="flex items-center flex-row justify-end w-2/5">
                     <div id="fetchBtn" class="control-Btn h-2/3 w-fit mr-2">

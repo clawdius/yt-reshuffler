@@ -9,16 +9,17 @@ body {
     color: var(--color-white);
 }
 
-#leftColumn, #rightColumn {
-    transition: all 0.35s; 
+#leftColumn,
+#rightColumn {
+    transition: all 0.35s;
 }
 
-#mainPlayerContainer>iframe {
+#mainPlayerContainer > iframe {
     border-radius: var(--container-radius);
 }
 
 #playlistTitle {
-    font-size: 20pt
+    font-size: 20pt;
 }
 
 .music-container:hover {
@@ -55,14 +56,22 @@ body {
     background-color: rgba(47, 4, 58, 0.3);
 }
 
-#search {
+#searchContainer {
     background-color: rgba(47, 4, 58, 0.3);
     border-radius: var(--container-radius);
+}
+
+#search {
     padding: 4px 8px;
 }
 
 #search:focus {
     outline: none;
+}
+
+#clearSearch {
+    position: relative;
+    left: -6px;
 }
 
 /* Scrollbar */

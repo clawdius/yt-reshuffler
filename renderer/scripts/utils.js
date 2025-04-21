@@ -1,4 +1,4 @@
-import { stateVars } from "./states.js";
+import { stateVars, stateElements } from "./states.js";
 
 export function debounce(f, d) {
     let timer;
@@ -12,6 +12,10 @@ export function debounce(f, d) {
 
 export function search(n) {
     if (n != "") {
+
+        stateElements.clearSearch.classList.add("block")
+        stateElements.clearSearch.classList.remove("hidden")
+
         let query = n.toLowerCase();
         if (n.substring(0, 2) == "p:") {
             // Search based on position
@@ -43,6 +47,10 @@ export function search(n) {
             }
         }
     } else {
+
+        stateElements.clearSearch.classList.add("hidden")
+        stateElements.clearSearch.classList.remove("block")
+
         for (let d of stateVars.songs) {
             d.classList.remove("hidden");
         }

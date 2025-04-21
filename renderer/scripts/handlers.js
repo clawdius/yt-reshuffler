@@ -33,6 +33,12 @@ function assignButtons() {
         searchInput(e.target.value);
     });
 
+    const clearSearch = document.querySelector("#clearSearch");
+    clearSearch.addEventListener("click", (e) => {
+        searchInput.value = "";
+        search("");
+    })
+
     // Reshuffler
     const reshuffler = document.querySelector("#reshuffleBtn");
     reshuffler.addEventListener("click", async () => {
