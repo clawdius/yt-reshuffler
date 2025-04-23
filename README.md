@@ -13,7 +13,7 @@ Heavily inspired <sup><sub>(probably the only reason, to be honest)</sub></sup> 
 
 ## # (Not so) Frequently Asked Questions
 ### > Why Electron?
-I don't want to open my chrome with a gazillion extensions just to listen to "Didn't See That Coming" by Quinten Coblentz.
+I don't want to open my chrome with a gazillion extensions just to listen to [Didn't See That Coming](https://music.youtube.com/watch?v=t7zWExFJL5I) by Quinten Coblentz.
 Besides, I just want to learn Electron. **You learn new technology by making something with it, right?**
 
 ### > Why the heck do I need Express? I thought this is a "client-only" app?
