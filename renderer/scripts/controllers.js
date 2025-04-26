@@ -114,8 +114,6 @@ export async function resetPlaylist(name) {
     stateElements.searchInput.value = "";
     search("");
 
-    console.log(player.pauseVideo());
-
     player.pauseVideo();
 }
 

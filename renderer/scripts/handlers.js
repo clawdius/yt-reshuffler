@@ -20,7 +20,7 @@ function assignButtons() {
     async function fetcherHandler() {
         fetcher.removeEventListener("click", fetcherHandler);
         await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
-        await loadPlaylist(stateVars.playlistSettings.playlistName).then(() => {
+        await resetPlaylist(stateVars.playlistSettings.playlistName).then(() => {
             fetcher.addEventListener("click", fetcherHandler);
         });
     }
@@ -36,7 +36,7 @@ function assignButtons() {
     stateElements.clearSearch.addEventListener("click", (e) => {
         stateElements.searchInput.value = "";
         search("");
-    })
+    });
 
     // Reshuffler
     stateElements.reshuffler.addEventListener("click", async () => {
