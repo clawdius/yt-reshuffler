@@ -59,6 +59,7 @@ function assignButtons() {
 
         // Resets search
         searchInput.value = "";
+        search("");
 
         player.pauseVideo();
     });
