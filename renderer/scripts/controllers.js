@@ -1,4 +1,5 @@
 import * as HTMLs from "./HTMLs.js";
+import { search } from "./utils.js";
 
 import { stateVars, stateElements } from "./states.js";
 import { assignSongsContainer } from "./handlers.js";
@@ -94,11 +95,35 @@ export async function loadPlaylist(name) {
     assignSongsContainer();
 }
 
+export async function resetPlaylist(name) {
+    await loadPlaylist(name);
+
+    stateVars.playingBefore = null;
+    stateVars.playingNow = null;
+
+    // Resets column width
+    if (stateElements.leftColumn.classList.contains("w-2/5") && stateElements.rightColumn.classList.contains("w-3/5")) {
+        stateElements.leftColumn.classList.remove("w-2/5", "pl-5");
+        stateElements.leftColumn.classList.add("w-0");
+
+        stateElements.rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
+        stateElements.rightColumn.classList.add("w-full", "px-5");
+    }
+
+    // Resets search
+    stateElements.searchInput.value = "";
+    search("");
+
+    console.log(player.pauseVideo());
+
+    player.pauseVideo();
+}
+
 function getCurrentMusicPosition() {
     let pos = 0;
 
-    while(true) {
-        if(stateVars.songs[pos].dataset.id == stateVars.playingNow) {
+    while (true) {
+        if (stateVars.songs[pos].dataset.id == stateVars.playingNow) {
             return pos;
         }
 
@@ -108,6 +133,6 @@ function getCurrentMusicPosition() {
 
 export function playNext() {
     let curr = getCurrentMusicPosition();
-    curr == stateVars.songs.length-1 ? curr = -1 : curr;
-    changePlayer(stateVars.songs[curr+1])
+    curr == stateVars.songs.length - 1 ? (curr = -1) : curr;
+    changePlayer(stateVars.songs[curr + 1]);
 }

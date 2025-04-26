@@ -1,6 +1,6 @@
 import { stateVars, stateElements } from "./states.js";
 import { debounce, search } from "./utils.js";
-import { changePlayer, loadPlaylist } from "./controllers.js";
+import { changePlayer, loadPlaylist, resetPlaylist } from "./controllers.js";
 
 export function assignSongsContainer() {
     stateVars.songs = document.querySelectorAll(".music-container");
@@ -27,41 +27,21 @@ function assignButtons() {
     fetcher.addEventListener("click", fetcherHandler);
 
     // Search
-    const searchInput = document.querySelector("input#search");
-    searchInput.addEventListener("keyup", (e) => {
+    stateElements.searchInput.addEventListener("keyup", (e) => {
         let searchInput = debounce(search, 200);
         searchInput(e.target.value);
     });
 
-    const clearSearch = document.querySelector("#clearSearch");
-    clearSearch.addEventListener("click", (e) => {
-        searchInput.value = "";
+    // Clear Search
+    stateElements.clearSearch.addEventListener("click", (e) => {
+        stateElements.searchInput.value = "";
         search("");
     })
 
     // Reshuffler
-    const reshuffler = document.querySelector("#reshuffleBtn");
-    reshuffler.addEventListener("click", async () => {
+    stateElements.reshuffler.addEventListener("click", async () => {
         let shuffledName = await window.playlistAPI.shufflePlaylist(stateVars.playlistSettings.playlistName);
-        await loadPlaylist(shuffledName);
-
-        stateVars.playingBefore = null;
-        stateVars.playingNow = null;
-
-        // Resets column width
-        if (stateElements.leftColumn.classList.contains("w-2/5") && stateElements.rightColumn.classList.contains("w-3/5")) {
-            stateElements.leftColumn.classList.remove("w-2/5", "pl-5");
-            stateElements.leftColumn.classList.add("w-0");
-
-            stateElements.rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
-            stateElements.rightColumn.classList.add("w-full", "px-5");
-        }
-
-        // Resets search
-        searchInput.value = "";
-        search("");
-
-        player.pauseVideo();
+        await resetPlaylist(shuffledName, stateElements.searchInput);
     });
 }
 

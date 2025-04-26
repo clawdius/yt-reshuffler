@@ -9,5 +9,7 @@ export let stateElements = {
     playlistContainer: document.querySelector("#playlist"),
     leftColumn: document.querySelector("#leftColumn"),
     rightColumn: document.querySelector("#rightColumn"),
-    clearSearch: document.querySelector("#clearSearch")
+    searchInput: document.querySelector("input#search"),
+    clearSearch: document.querySelector("#clearSearch"),
+    reshuffler: document.querySelector("#reshuffleBtn"),
 }
