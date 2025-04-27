@@ -28,7 +28,7 @@ async function fetchDataFromYT(id) {
         for (let d of songs.items) {
             cleanItems.push({
                 "title": d.snippet.title,
-                "channel": d.snippet.videoOwnerChannelTitle,
+                "channel": d.snippet.videoOwnerChannelTitle != undefined ? d.snippet.videoOwnerChannelTitle : "Deleted Video",
                 "id": d.snippet.resourceId.videoId,
             });
         }
