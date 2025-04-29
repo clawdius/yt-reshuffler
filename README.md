@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">YT-Reshuffler</h1>
 
-![image](https://github.com/user-attachments/assets/bb54a589-2301-48f4-af30-ac0989a639b7)
+![image](https://github.com/user-attachments/assets/12b0650d-1f47-4388-9c77-4a8448f7f0e4)
 <p align=center> <i>Image does not represent final quality, because it's still Work In Progress, after all </i></p>
 
 ## # Why?
