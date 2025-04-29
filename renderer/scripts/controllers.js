@@ -1,5 +1,5 @@
 import * as HTMLs from "./HTMLs.js";
-import { search } from "./utils.js";
+import { changeLayout, search } from "./utils.js";
 
 import { stateVars, stateElements } from "./states.js";
 import { assignSongsContainer } from "./handlers.js";
@@ -40,19 +40,7 @@ export function playerController(state, playingNow, embed) {
 
 export function changePlayer(musicContainer) {
     // Adjust width for the first time
-    if (stateElements.leftColumn.classList.contains("w-0") && stateElements.rightColumn.classList.contains("w-full")) {
-        stateElements.leftColumn.classList.add("w-2/5", "pl-5");
-        stateElements.leftColumn.classList.remove("w-0");
-
-        stateElements.rightColumn.classList.add("w-3/5", "pl-3", "pr-5");
-        stateElements.rightColumn.classList.remove("w-full", "px-5");
-
-        stateElements.midContainer.classList.add("h-8/10")
-        stateElements.midContainer.classList.remove("h-10/10")
-
-        stateElements.botContainer.classList.add("h-2/10")
-        stateElements.botContainer.classList.remove("h-0/10")
-    }
+    changeLayout("active");
 
     if (stateVars.playingNow != null) {
         stateVars.playingBefore = stateVars.playingNow;
@@ -114,19 +102,7 @@ export async function resetPlaylist(name) {
     stateVars.playingNow = null;
 
     // Resets column width
-    if (stateElements.leftColumn.classList.contains("w-2/5") && stateElements.rightColumn.classList.contains("w-3/5")) {
-        stateElements.leftColumn.classList.remove("w-2/5", "pl-5");
-        stateElements.leftColumn.classList.add("w-0");
-
-        stateElements.rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
-        stateElements.rightColumn.classList.add("w-full", "px-5");
-
-        stateElements.midContainer.classList.remove("h-8/10")
-        stateElements.midContainer.classList.add("h-10/10")
-
-        stateElements.botContainer.classList.remove("h-2/10")
-        stateElements.botContainer.classList.add("h-0/10")
-    }
+    changeLayout("reset");
 
     // Resets search
     stateElements.searchInput.value = "";
@@ -175,4 +151,9 @@ export function playPrevious() {
             player.seekTo(0);
         }
     }
+}
+
+export function randomizer() {
+    const rIndex = Math.floor(Math.random() * stateVars.songs.length - 1) + 1
+    return changePlayer(stateVars.songs[rIndex]);
 }

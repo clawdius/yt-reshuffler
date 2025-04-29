@@ -1,6 +1,6 @@
 import { stateVars, stateElements } from "./states.js";
 import { debounce, search } from "./utils.js";
-import { changePlayer, resetPlaylist, playNext, playPrevious, playerController, getCurrentMusicPosition } from "./controllers.js";
+import { changePlayer, resetPlaylist, playNext, playPrevious, playerController, getCurrentMusicPosition, randomizer } from "./controllers.js";
 
 export function assignSongsContainer() {
     stateVars.songs = document.querySelectorAll(".music-container");
@@ -13,22 +13,21 @@ export function assignSongsContainer() {
 }
 
 function assignButtons() {
-    // --Fetcher
-    const fetcher = document.querySelector("#fetchBtn");
 
-    // Prevent multiple clicks when fetching
+    // -- Fetcher
+    // Special case: Prevent multiple fetch simultaneously
     async function fetcherHandler() {
-        fetcher.removeEventListener("click", fetcherHandler);
+        stateElements.fetcher.removeEventListener("click", fetcherHandler);
         await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
         await resetPlaylist(stateVars.playlistSettings.playlistName).then(() => {
-            fetcher.addEventListener("click", fetcherHandler);
+            stateElements.fetcher.addEventListener("click", fetcherHandler);
         });
-    }
-    fetcher.addEventListener("click", fetcherHandler);
+    };
+    stateElements.fetcher.addEventListener("click", fetcherHandler);
 
     // -- Search
     stateElements.searchInput.addEventListener("keyup", (e) => {
-        let searchInput = debounce(search, 200);
+        const searchInput = debounce(search, 200);
         searchInput(e.target.value);
     });
 
@@ -40,9 +39,14 @@ function assignButtons() {
 
     // -- Reshuffler
     stateElements.reshuffler.addEventListener("click", async () => {
-        let shuffledName = await window.playlistAPI.shufflePlaylist(stateVars.playlistSettings.playlistName);
+        const shuffledName = await window.playlistAPI.shufflePlaylist(stateVars.playlistSettings.playlistName);
         await resetPlaylist(shuffledName, stateElements.searchInput);
     });
+
+    // -- Randomizer
+    stateElements.randomizer.addEventListener("click", () => {
+        randomizer();
+    })
 
     // -- Main Controls
     // Previous button
@@ -84,7 +88,7 @@ function assignCustomShortcuts() {
     });
 }
 
-export async function assignHandlers() {
+export function assignHandlers() {
     assignButtons();
     assignCustomShortcuts();
 }
