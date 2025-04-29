@@ -1,6 +1,6 @@
 import { stateVars, stateElements } from "./states.js";
 import { debounce, search } from "./utils.js";
-import { changePlayer, resetPlaylist, playNext, playPrevious, playerController } from "./controllers.js";
+import { changePlayer, resetPlaylist, playNext, playPrevious, playerController, getCurrentMusicPosition } from "./controllers.js";
 
 export function assignSongsContainer() {
     stateVars.songs = document.querySelectorAll(".music-container");
@@ -58,6 +58,14 @@ function assignButtons() {
     // State Control button
     stateElements.stateControl.addEventListener("click", () => {
         playerController(player.getPlayerState(), stateVars.playingNow, false)
+    })
+
+    // Info
+    stateElements.info.addEventListener("click", () => {
+        const curr = document.querySelector(`.music-container[data-pos="${getCurrentMusicPosition() + 1}"]`)
+        curr.scrollIntoView({
+            behavior: "smooth"
+        })
     })
 }
 

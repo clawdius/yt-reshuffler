@@ -138,7 +138,7 @@ export async function resetPlaylist(name) {
     player.pauseVideo();
 }
 
-function getCurrentMusicPosition() {
+export function getCurrentMusicPosition() {
     let pos = 0;
 
     while (true) {
