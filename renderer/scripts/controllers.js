@@ -7,7 +7,7 @@ import { assignSongsContainer } from "./handlers.js";
 export function playerController(state, playingNow, embed) {
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
     const mci = document.querySelector(`.music-container[data-id="${playingNow}"] img`);
-    const scc = document.querySelector(`#controlState > img`);
+    const scc = document.querySelector(`#controlState img`);
 
     if (stateVars.playingNow != null) {
         switch (state) {
@@ -47,11 +47,11 @@ export function changePlayer(musicContainer) {
         stateElements.rightColumn.classList.add("w-3/5", "pl-3", "pr-5");
         stateElements.rightColumn.classList.remove("w-full", "px-5");
 
-        stateElements.midContainer.classList.add("h-10/12")
-        stateElements.midContainer.classList.remove("h-11/12")
+        stateElements.midContainer.classList.add("h-8/10")
+        stateElements.midContainer.classList.remove("h-10/10")
 
-        stateElements.botContainer.classList.add("h-2/12")
-        stateElements.botContainer.classList.remove("h-0/12")
+        stateElements.botContainer.classList.add("h-2/10")
+        stateElements.botContainer.classList.remove("h-0/10")
     }
 
     if (stateVars.playingNow != null) {
@@ -70,6 +70,8 @@ export function changePlayer(musicContainer) {
         // Add pauseIcon to the current playing song
         const mcc = document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`);
         mcc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("mini", "pause"));
+
+        stateElements.info.innerHTML = `${mcc.dataset.pos}. ${mcc.dataset.title}`
 
         // Remove the pauseIcon on previous song
         if (stateVars.playingBefore != null) {
@@ -119,16 +121,19 @@ export async function resetPlaylist(name) {
         stateElements.rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
         stateElements.rightColumn.classList.add("w-full", "px-5");
 
-        stateElements.midContainer.classList.remove("h-10/12")
-        stateElements.midContainer.classList.add("h-11/12")
+        stateElements.midContainer.classList.remove("h-8/10")
+        stateElements.midContainer.classList.add("h-10/10")
 
-        stateElements.botContainer.classList.remove("h-2/12")
-        stateElements.botContainer.classList.add("h-0/12")
+        stateElements.botContainer.classList.remove("h-2/10")
+        stateElements.botContainer.classList.add("h-0/10")
     }
 
     // Resets search
     stateElements.searchInput.value = "";
     search("");
+
+    // Resets info
+    stateElements.info.innerHTML = ""
 
     player.pauseVideo();
 }

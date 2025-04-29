@@ -14,6 +14,7 @@ body {
 #mid,
 #bot {
     transition: all 0.5s;
+    overflow: hidden !important;
 }
 
 #mid {
@@ -21,7 +22,7 @@ body {
 }
 
 #top {
-    height: 40px;
+    height: 56px;
 }
 
 #embedContainer > iframe {
@@ -100,6 +101,10 @@ body {
 #controlState:hover,
 #controlPrevious:hover {
     background-color: rgba(235, 235, 235, 0.07)
+}
+
+#info {
+    font-size: 14pt;
 }
 
 

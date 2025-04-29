@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="../styles/styles.css" />
     </head>
     <body class="flex h-screen w-screen">
-        <div class="flex flex-col w-full h-full py-5">
+        <div class="flex flex-col w-full h-full py-3">
             <div id="top" class="flex px-5 w-full items-center">
                 <div id="playlistInfo" class="flex items-center w-2/5">
                     <img src="/renderer/assets/playlist-icon.svg" class="h-2/3 mr-2 mt-1" />
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div id="mid" class="flex w-full h-11/12">
+            <div id="mid" class="flex w-full h-10/10">
                 <div id="leftColumn" class="w-0 h-full">
                     <div id="embedContainer" class="w-full h-full">
                         <div id="mainPlayer" class="w-full h-full"></div>
@@ -36,9 +36,11 @@
                     <div id="playlist" class="h-full overflow-y-auto px-2"></div>
                 </div>
             </div>
-            <div id="bot" class="flex w-full px-5 h-0/12 items-center">
+            <div id="bot" class="flex w-full px-5 h-0/10 items-center">
                 <div id="playerControlContainer" class="flex w-full h-3/4">
-                    <div id="currentMusicInfo" class="w-5/6"></div>
+                    <div id="currentMusicInfo" class="w-5/6 flex items-center px-5">
+                        <div id="info"></div>
+                    </div>
                     <div id="playerControl" class="flex w-1/6 items-center">
                         <div class="flex w-1/3 justify-center h-1/2">
                             <div id="controlPrevious">

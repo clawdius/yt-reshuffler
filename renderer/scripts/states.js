@@ -16,4 +16,5 @@ export let stateElements = {
     nextControl: document.querySelector("#controlNext"),
     midContainer: document.querySelector("#mid"),
     botContainer: document.querySelector("#bot"),
+    info: document.querySelector("#info")
 }
