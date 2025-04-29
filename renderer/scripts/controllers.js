@@ -135,6 +135,12 @@ export async function resetPlaylist(name) {
     // Resets info
     stateElements.info.innerHTML = ""
 
+    // Scroll to first music
+    const first = document.querySelector(`.music-container[data-pos="1"]`)
+    first.scrollIntoView({
+        behavior: "smooth"
+    })
+
     player.pauseVideo();
 }
 
