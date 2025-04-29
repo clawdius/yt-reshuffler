@@ -1,14 +1,10 @@
-export const playHTML = `
-    <div class="flex align-items-center mr-5">
-        <img src="/renderer/assets/play-icon.svg">
-    </div>
-`;
-
-export const pauseHTML = `
-    <div class="flex align-items-center mr-5">
-        <img src="/renderer/assets/pause-icon.svg">
-    </div>
-`;
+export const stateIcon = (type, state) => {
+            return `
+                <div ${type == "main" ? "id=controlState" : ""} class="flex align-items-center ${type == "mini" ? "mr-5" : "h-full justify-center"}">
+                    <img src="/renderer/assets/${state}-icon.svg" ${type == "main" ? "class='h-full'" : ""}>
+                </div>
+            `;
+        };
 
 export const musicContainer = (title, channel, id, pos) => {
     return `

@@ -1,6 +1,6 @@
 import { stateVars, stateElements } from "./states.js";
 import { debounce, search } from "./utils.js";
-import { changePlayer, loadPlaylist, resetPlaylist } from "./controllers.js";
+import { changePlayer, resetPlaylist, playNext, playPrevious, playerController } from "./controllers.js";
 
 export function assignSongsContainer() {
     stateVars.songs = document.querySelectorAll(".music-container");
@@ -13,7 +13,7 @@ export function assignSongsContainer() {
 }
 
 function assignButtons() {
-    // Fetcher
+    // --Fetcher
     const fetcher = document.querySelector("#fetchBtn");
 
     // Prevent multiple clicks when fetching
@@ -26,23 +26,39 @@ function assignButtons() {
     }
     fetcher.addEventListener("click", fetcherHandler);
 
-    // Search
+    // -- Search
     stateElements.searchInput.addEventListener("keyup", (e) => {
         let searchInput = debounce(search, 200);
         searchInput(e.target.value);
     });
 
-    // Clear Search
+    // -- Clear Search
     stateElements.clearSearch.addEventListener("click", (e) => {
         stateElements.searchInput.value = "";
         search("");
     });
 
-    // Reshuffler
+    // -- Reshuffler
     stateElements.reshuffler.addEventListener("click", async () => {
         let shuffledName = await window.playlistAPI.shufflePlaylist(stateVars.playlistSettings.playlistName);
         await resetPlaylist(shuffledName, stateElements.searchInput);
     });
+
+    // -- Main Controls
+    // Previous button
+    stateElements.previousControl.addEventListener("click", () => {
+        playPrevious();
+    });
+
+    // Next button
+    stateElements.nextControl.addEventListener("click", () => {
+        playNext();
+    });
+
+    // State Control button
+    stateElements.stateControl.addEventListener("click", () => {
+        playerController(player.getPlayerState(), stateVars.playingNow, false)
+    })
 }
 
 function assignCustomShortcuts() {
@@ -60,7 +76,7 @@ function assignCustomShortcuts() {
     });
 }
 
-export function assignHandlers() {
+export async function assignHandlers() {
     assignButtons();
     assignCustomShortcuts();
 }

@@ -12,7 +12,7 @@ let server,
 const createMainWindow = () => {
     win = new BrowserWindow({
         width: 960,
-        height: 600,
+        height: 660,
         icon: path.join(__dirname, "../icon.png"),
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),

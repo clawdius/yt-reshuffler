@@ -6,49 +6,59 @@ import { assignSongsContainer } from "./handlers.js";
 
 export function playerController(state, playingNow, embed) {
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
+    const mci = document.querySelector(`.music-container[data-id="${playingNow}"] img`);
+    const scc = document.querySelector(`#controlState > img`);
 
-    switch (state) {
-        case 1: {
-            // Pausing a played video
-            embed ? null : player.pauseVideo();
+    if (stateVars.playingNow != null) {
+        switch (state) {
+            case 1: {
+                // Pausing a played video
+                embed ? null : player.pauseVideo();
 
-            mcc.removeChild(mcc.lastElementChild);
-            mcc.insertAdjacentHTML("beforeend", embed ? HTMLs.pauseHTML : HTMLs.playHTML);
+                mci.src = embed ? "/renderer/assets/pause-icon.svg" : "/renderer/assets/play-icon.svg"
+                scc.src = "/renderer/assets/pause-icon.svg"
 
-            embed ? window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) : window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
+                embed ? window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) : window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
 
-            break;
-        }
-        case 3:
-        case 2: {
-            // Playing a paused / stopped video
-            embed ? null : player.playVideo();
+                break;
+            }
+            case 3:
+            case 2: {
+                // Playing a paused / stopped video
+                embed ? null : player.playVideo();
 
-            mcc.removeChild(mcc.lastElementChild);
-            mcc.insertAdjacentHTML("beforeend", embed ? HTMLs.playHTML : HTMLs.pauseHTML);
+                mci.src = embed ? "/renderer/assets/play-icon.svg" : "/renderer/assets/pause-icon.svg"
+                scc.src = "/renderer/assets/play-icon.svg"
 
-            embed ? window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`) : window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
+                embed ? window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`) : window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
 
-            break;
+                break;
+            }
         }
     }
 }
 
 export function changePlayer(musicContainer) {
     // Adjust width for the first time
-
     if (stateElements.leftColumn.classList.contains("w-0") && stateElements.rightColumn.classList.contains("w-full")) {
         stateElements.leftColumn.classList.add("w-2/5", "pl-5");
         stateElements.leftColumn.classList.remove("w-0");
 
         stateElements.rightColumn.classList.add("w-3/5", "pl-3", "pr-5");
         stateElements.rightColumn.classList.remove("w-full", "px-5");
+
+        stateElements.midContainer.classList.add("h-10/12")
+        stateElements.midContainer.classList.remove("h-11/12")
+
+        stateElements.botContainer.classList.add("h-2/12")
+        stateElements.botContainer.classList.remove("h-0/12")
     }
 
     if (stateVars.playingNow != null) {
         stateVars.playingBefore = stateVars.playingNow;
     }
 
+    // Get playingNow
     stateVars.playingNow = musicContainer.dataset.id;
 
     if (stateVars.playingNow == stateVars.playingBefore) {
@@ -59,7 +69,7 @@ export function changePlayer(musicContainer) {
     if (stateVars.playingBefore != stateVars.playingNow) {
         // Add pauseIcon to the current playing song
         const mcc = document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`);
-        mcc.insertAdjacentHTML("beforeend", HTMLs.pauseHTML);
+        mcc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("mini", "pause"));
 
         // Remove the pauseIcon on previous song
         if (stateVars.playingBefore != null) {
@@ -91,7 +101,7 @@ export async function loadPlaylist(name) {
         pos++;
     }
 
-    // Assign containers every playlist load
+    // Assign containers function every playlist load
     assignSongsContainer();
 }
 
@@ -108,6 +118,12 @@ export async function resetPlaylist(name) {
 
         stateElements.rightColumn.classList.remove("w-3/5", "pl-3", "pr-5");
         stateElements.rightColumn.classList.add("w-full", "px-5");
+
+        stateElements.midContainer.classList.remove("h-10/12")
+        stateElements.midContainer.classList.add("h-11/12")
+
+        stateElements.botContainer.classList.remove("h-2/12")
+        stateElements.botContainer.classList.add("h-0/12")
     }
 
     // Resets search
@@ -130,7 +146,22 @@ function getCurrentMusicPosition() {
 }
 
 export function playNext() {
-    let curr = getCurrentMusicPosition();
-    curr == stateVars.songs.length - 1 ? (curr = -1) : curr;
-    changePlayer(stateVars.songs[curr + 1]);
+    if (stateVars.playingNow != null) {
+        let curr = getCurrentMusicPosition();
+        curr == stateVars.songs.length - 1 ? (curr = -1) : curr;
+        changePlayer(stateVars.songs[curr + 1]);
+    }
+}
+
+export function playPrevious() {
+    if (stateVars.playingNow != null) {
+        // Play previous when the current time is under 3 secs, otherwise, resets the music
+        if (Math.floor(player.getCurrentTime() <= 3)) {
+            let curr = getCurrentMusicPosition();
+            curr == 0 ? (curr = stateVars.songs.length - 1) : curr;
+            changePlayer(stateVars.songs[curr - 1]);
+        } else {
+            player.seekTo(0);
+        }
+    }
 }
