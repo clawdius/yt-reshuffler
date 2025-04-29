@@ -13,7 +13,15 @@ body {
 #rightColumn,
 #mid,
 #bot {
-    transition: all 0.35s;
+    transition: all 0.5s;
+}
+
+#mid {
+    min-height: 486px;
+}
+
+#top {
+    height: 40px;
 }
 
 #embedContainer > iframe {
