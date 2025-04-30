@@ -69,7 +69,7 @@ function assignButtons() {
 
     // Info
     stateElements.info.addEventListener("click", () => {
-        jumpTo(getCurrentMusicPosition()+1, "instant");
+        jumpTo(getCurrentMusicPosition()+1, "smooth");
     })
 }
 
