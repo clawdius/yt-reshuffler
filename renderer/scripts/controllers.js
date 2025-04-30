@@ -1,5 +1,5 @@
 import * as HTMLs from "./HTMLs.js";
-import { changeLayout, search } from "./utils.js";
+import { changeLayout, jumpTo, search } from "./utils.js";
 
 import { stateVars, stateElements } from "./states.js";
 import { assignSongsContainer } from "./handlers.js";
@@ -112,10 +112,7 @@ export async function resetPlaylist(name) {
     stateElements.info.innerHTML = ""
 
     // Scroll to first music
-    const first = document.querySelector(`.music-container[data-pos="1"]`)
-    first.scrollIntoView({
-        behavior: "smooth"
-    })
+    jumpTo(1, "smooth")
 
     player.pauseVideo();
 }
@@ -145,7 +142,7 @@ export function playPrevious() {
         // Play previous when the current time is under 3 secs, otherwise, resets the music
         if (Math.floor(player.getCurrentTime() <= 3)) {
             let curr = getCurrentMusicPosition();
-            curr == 0 ? (curr = stateVars.songs.length - 1) : curr;
+            curr == 0 ? (curr = stateVars.songs.length) : curr;
             changePlayer(stateVars.songs[curr - 1]);
         } else {
             player.seekTo(0);
