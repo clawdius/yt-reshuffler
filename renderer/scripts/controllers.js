@@ -151,6 +151,6 @@ export function playPrevious() {
 }
 
 export function randomizer() {
-    const rIndex = Math.floor(Math.random() * (stateVars.songs.length - 1)) + 1
+    const rIndex = Math.floor(Math.random() * (stateVars.songs.length - 1))
     return changePlayer(stateVars.songs[rIndex]);
 }
