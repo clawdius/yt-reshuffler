@@ -3,8 +3,6 @@ import * as HTMLs from "./HTMLs.js";
 import { assignHandlers } from "./handlers.js";
 import { loadPlaylist, playerController, playNext } from "./controllers.js";
 
-// Utils
-
 async function startUp() {
     // Set first loaded playlist
     const last = await window.playlistSettings.getLastPlaylist();

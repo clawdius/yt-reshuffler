@@ -1,5 +1,5 @@
 import { stateVars, stateElements } from "./states.js";
-import { debounce, search } from "./utils.js";
+import { debounce, jumpTo, search } from "./utils.js";
 import { changePlayer, resetPlaylist, playNext, playPrevious, playerController, getCurrentMusicPosition, randomizer } from "./controllers.js";
 
 export function assignSongsContainer() {
@@ -34,6 +34,9 @@ function assignButtons() {
     stateElements.clearSearch.addEventListener("click", (e) => {
         stateElements.searchInput.value = "";
         search("");
+        if(stateVars.playingNow != null) {
+            jumpTo(getCurrentMusicPosition()+1, "instant");
+        }
     });
 
     // -- Reshuffler
@@ -45,6 +48,7 @@ function assignButtons() {
     // -- Randomizer
     stateElements.randomizer.addEventListener("click", () => {
         randomizer();
+        jumpTo(getCurrentMusicPosition()+1, "instant");
     })
 
     // -- Main Controls
@@ -65,10 +69,7 @@ function assignButtons() {
 
     // Info
     stateElements.info.addEventListener("click", () => {
-        const curr = document.querySelector(`.music-container[data-pos="${getCurrentMusicPosition() + 1}"]`)
-        curr.scrollIntoView({
-            behavior: "smooth"
-        })
+        jumpTo(getCurrentMusicPosition()+1, "instant");
     })
 }
 

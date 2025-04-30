@@ -87,3 +87,9 @@ export function changeLayout(state) {
             }
     }
 }
+
+export function jumpTo(pos, type = "smooth") {
+    return document.querySelector(`.music-container[data-pos="${pos}"]`).scrollIntoView({
+        behavior: type
+    })
+}
