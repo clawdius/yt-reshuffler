@@ -71,7 +71,7 @@ async function loadPlaylist(name) {
 }
 
 async function getLastPlaylist() {
-    return JSON.parse(await fs.readFile(`./playlists/last-playlist.json`));
+    return JSON.parse(await fs.readFile(`./conf/playlistSettings.json`));
 }
 
 module.exports = {
