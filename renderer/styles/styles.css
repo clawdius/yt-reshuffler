@@ -5,7 +5,8 @@
 }
 
 body {
-    background: linear-gradient(90deg, rgba(78, 19, 110, 1) 0%, rgb(70, 5, 82) 100%);
+    /* Default color to prevent white "flash" before custom backgroundColor applied */
+    background-color: rgb(21, 21, 21); 
     color: var(--color-white);
     user-select: none;
 }

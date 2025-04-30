@@ -1,7 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("playlistSettings", {
-    getLastPlaylist: () => ipcRenderer.invoke("get-last-playlist") 
+    getLastPlaylist: () => ipcRenderer.invoke("get-last-playlist"),
+    getSettingsValue: () => ipcRenderer.invoke("get-settings-value")
 });
 
 contextBridge.exposeInMainWorld("playlistAPI", {

@@ -1,10 +1,14 @@
 const { ipcMain } = require("electron/main");
-const playlistUtils = require("./utils/PlaylistUtils");
+const playlistUtils = require("./utils/playlistUtils");
 
 function setupMainHandlers(handlersData) {
 
     ipcMain.handle("get-last-playlist", async (e) => {
         return await playlistUtils.getLastPlaylist()
+    })
+
+    ipcMain.handle("get-settings-value", async (e) => {
+        return global.config
     })
 
     ipcMain.handle("load-playlist", async (e, name) => {

@@ -24,13 +24,21 @@ async function startUp() {
         get: () => stateVars.playingNow,
     });
 
-    // Probably temporary solution, add controlState at first load and insert into global stateElements
+    // Probably temporary solution, add `controlState` at first load and insert into global `stateElements`
     const scc = document.querySelector("#controlStateContainer");
     scc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("main", "play"));
-    stateElements.stateControl = document.querySelector("#controlState")
-
+    stateElements.stateControl = document.querySelector("#controlState");
+   
     window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
+    
 }
+
+// Sets custom background before everything else
+document.addEventListener("DOMContentLoaded", async () => {
+    // Change page's background color
+    const appSettings =  await window.playlistSettings.getSettingsValue();
+    document.querySelector("body").style.background = appSettings.backgroundColor;
+})
 
 window.onload = async () => {
     await startUp();
@@ -42,5 +50,6 @@ window.onload = async () => {
         await loadPlaylist(stateVars.playlistSettings.playlistName)
     });
 
+    // Assign handlers, duh!
     assignHandlers();
 };

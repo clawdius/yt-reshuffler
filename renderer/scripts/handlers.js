@@ -13,7 +13,6 @@ export function assignSongsContainer() {
 }
 
 function assignButtons() {
-
     // -- Fetcher
     // Special case: Prevent multiple fetch simultaneously
     async function fetcherHandler() {

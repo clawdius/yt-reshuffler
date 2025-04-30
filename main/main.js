@@ -1,13 +1,12 @@
 const { app, BrowserWindow } = require("electron/main");
-const fs = require("fs").promises;
 const { spawn } = require("child_process");
 const path = require("node:path");
 
 const { setupMainHandlers } = require("./mainHandlers.js");
+const { registerSettings } = require("./utils/registerSettings.js");
 
 let server,
     handlersData = {};
-    global.config = {};
 
 const createMainWindow = () => {
     win = new BrowserWindow({
@@ -29,8 +28,9 @@ const createMainWindow = () => {
 };
 
 app.whenReady().then(async () => {
-    global.config.port = JSON.parse(await fs.readFile("./conf/settings.json")).port;
-    global.config.key = JSON.parse(await fs.readFile("./conf/settings.json")).key;
+
+    // Register settings to `global.config`
+    await registerSettings();
 
     // Create express server instance
     server = spawn("node", ["main/server/server.js"], {
