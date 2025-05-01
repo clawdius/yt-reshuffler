@@ -16,7 +16,7 @@ Heavily inspired <sup><sub>(probably the only reason, to be honest)</sub></sup> 
 I don't want to open my chrome with a gazillion extensions just to listen to [Didn't See That Coming](https://music.youtube.com/watch?v=t7zWExFJL5I) by Quinten Coblentz.
 Besides, I just want to learn Electron. **You learn new technology by making something with it, right?**
 
-### > Using Json to save things in the big 25? There's this technology called `database`, my guy. 🥀🥀
+### > Using Json to save things in the big 25? There's this technology called `database`. 🥀🥀
 No thanks, using portable DB such as `sqlite` is overrated.
 
 ### > Why the heck do I need Express? I thought this is a "client-only" app?
