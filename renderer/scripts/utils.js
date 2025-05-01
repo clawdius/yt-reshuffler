@@ -88,6 +88,11 @@ export function changeLayout(state) {
     }
 }
 
+export function resetSearch() {
+    stateElements.searchInput.value = "";
+    return search("");
+}
+
 export function jumpTo(pos, type = "smooth") {
     return document.querySelector(`.music-container[data-pos="${pos}"]`).scrollIntoView({
         behavior: type

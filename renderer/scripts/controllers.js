@@ -1,5 +1,5 @@
 import * as HTMLs from "./HTMLs.js";
-import { changeLayout, jumpTo, search } from "./utils.js";
+import { changeLayout, jumpTo, resetSearch } from "./utils.js";
 
 import { stateVars, stateElements } from "./states.js";
 import { assignSongsContainer } from "./handlers.js";
@@ -105,8 +105,7 @@ export async function resetPlaylist(name) {
     changeLayout("reset");
 
     // Resets search
-    stateElements.searchInput.value = "";
-    search("");
+    resetSearch()
 
     // Resets info
     stateElements.info.innerHTML = ""
