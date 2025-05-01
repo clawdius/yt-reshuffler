@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">YT-Reshuffler</h1>
 
-![image](https://github.com/user-attachments/assets/12b0650d-1f47-4388-9c77-4a8448f7f0e4)
+![image](https://github.com/user-attachments/assets/91fb7323-e844-49b9-848e-9d1f483dae80)
 <p align=center> <i>Image does not represent final quality, because it's still Work In Progress, after all </i></p>
 
 ## # Why?
@@ -15,6 +15,9 @@ Heavily inspired <sup><sub>(probably the only reason, to be honest)</sub></sup> 
 ### > Why Electron?
 I don't want to open my chrome with a gazillion extensions just to listen to [Didn't See That Coming](https://music.youtube.com/watch?v=t7zWExFJL5I) by Quinten Coblentz.
 Besides, I just want to learn Electron. **You learn new technology by making something with it, right?**
+
+### > Using Json to save things in the big 25? There's this technology called `database`, my guy. 🥀🥀
+No thanks, using portable DB such as `sqlite` is overrated.
 
 ### > Why the heck do I need Express? I thought this is a "client-only" app?
 Youtube's embed gets mad if we directly use it with `file:///` protocol.
