@@ -66,11 +66,11 @@ body {
 
 #playlist {
     border-radius: var(--container-radius);
-    background-color: rgba(47, 4, 58, 0.3);
+    background-color: rgba(27, 27, 27, 0.3);
 }
 
 #searchContainer {
-    background-color: rgba(47, 4, 58, 0.3);
+    background-color: rgba(27, 27, 27, 0.3);
     border-radius: var(--container-radius);
 }
 
@@ -89,7 +89,7 @@ body {
 
 #playerControlContainer {
     border-radius: var(--container-radius);
-    background-color: rgba(47, 4, 58, 0.3)
+    background-color: rgba(27, 27, 27, 0.3);
 }
 
 #controlNext,
