@@ -55,11 +55,13 @@ function assignButtons() {
     // Previous button
     stateElements.previousControl.addEventListener("click", () => {
         playPrevious();
+        jumpTo(getCurrentMusicPosition()+1)
     });
 
     // Next button
     stateElements.nextControl.addEventListener("click", () => {
         playNext();
+        jumpTo(getCurrentMusicPosition()+1)
     });
 
     // State Control button
@@ -69,7 +71,7 @@ function assignButtons() {
 
     // Info
     stateElements.info.addEventListener("click", () => {
-        jumpTo(getCurrentMusicPosition()+1, "smooth");
+        jumpTo(getCurrentMusicPosition()+1);
     })
 }
 
