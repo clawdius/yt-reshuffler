@@ -59,7 +59,7 @@ export function changePlayer(musicContainer) {
         const mcc = document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`);
         mcc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("mini", "pause"));
 
-        stateElements.info.innerHTML = `${mcc.dataset.pos}. ${mcc.dataset.title}`
+        stateElements.info.innerHTML = `<span style="font-size: 8pt">${mcc.dataset.pos}.</span> ${mcc.dataset.title}`
 
         // Remove the pauseIcon on previous song
         if (stateVars.playingBefore != null) {
@@ -85,7 +85,7 @@ export async function loadPlaylist(name) {
     let pos = 1;
 
     for (let s of res.songs) {
-        // Not-so-hacky because I don't want to use `createElement`
+        // Not-so-hacky workaround because I don't want to use `createElement`
         musicContainer = HTMLs.musicContainer(s.title, s.channel, s.id, pos);
         stateElements.playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
         pos++;
