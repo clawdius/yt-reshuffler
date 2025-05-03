@@ -64,6 +64,7 @@ body {
 
 .music-container {
     border-radius: var(--container-radius);
+    scroll-margin: calc(var(--spacing)* 2);
 }
 
 .music-position {
