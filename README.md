@@ -7,7 +7,10 @@
 <p align=center> <i>Image does not represent final quality, because it's still Work In Progress, after all </i></p>
 
 ## # Why?
-Youtube default playlist shuffler sucks, my playlist has 1000+ songs and the shuffler died before shuffling my entire playlist, so I made those online "Youtube Randomizer" thing for desktop, powered by [Electron](https://www.electronjs.org/) type shii 🔥🔥.
+- Youtube default playlist shuffler sucks, my playlist has 1000+ songs and the shuffler **died** before shuffling my entire playlist. <sup><sub>(Theoretically. 90% chance I just made this up, maybe)</sub></sup>
+- When listening to a playlist on YouTube, the maximum musics displayed on a single page is around **250 musics**. The problem is, I can't freely navigate my entire 1000+ musics on the same page, which is sucks.
+
+So I made those online "Youtube Randomizer" thing for desktop, powered by [Electron](https://www.electronjs.org/) type shii 🔥🔥
 
 Heavily inspired <sup><sub>(probably the only reason, to be honest)</sub></sup> by [Youtube Playlist Randomizer](https://youtube-playlist-randomizer.bitbucket.io/), big thanks to whoever made that masterpiece.
 
@@ -16,7 +19,7 @@ Heavily inspired <sup><sub>(probably the only reason, to be honest)</sub></sup> 
 I don't want to open my chrome with a gazillion extensions just to listen to [Didn't See That Coming](https://music.youtube.com/watch?v=t7zWExFJL5I) by Quinten Coblentz.
 Besides, I just want to learn Electron. **You learn new technology by making something with it, right?**
 
-### > Using Json to save things in the big 25? There's this technology called `database`. 🥀🥀
+### > Using Json to save things in the big 25? There's this technology called `database` 🥀🥀
 No thanks, using portable DB such as `sqlite` is overrated.
 
 ### > Why the heck do I need Express? I thought this is a "client-only" app?
