@@ -114,3 +114,11 @@ export function loader(type, text = "Loading") {
         c.style.opacity = 0;
     }
 }
+
+export function textPurifier(text) {
+    if(text.includes('"')) {
+        return `'${text}'`
+    } else {
+        return `"${text}"`
+    }
+}
