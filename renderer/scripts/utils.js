@@ -1,4 +1,6 @@
+import { loadOverlay } from "./HTMLs.js";
 import { stateVars, stateElements } from "./states.js";
+
 
 export function debounce(f, d) {
     let timer;
@@ -97,4 +99,18 @@ export function jumpTo(pos, type = "smooth") {
     return document.querySelector(`.music-container[data-pos="${pos}"]`).scrollIntoView({
         behavior: type
     })
+}
+
+export function loader(type, text = "Loading") {
+    if(type == "on") {
+        const b = document.querySelector("body");
+        b.insertAdjacentHTML("afterbegin", loadOverlay(text));
+    }
+    if(type == "off") {
+        const c = document.querySelector("#loadOverlay");
+        c.addEventListener("transitionend", () => {
+            c.remove();
+        })
+        c.style.opacity = 0;
+    }
 }

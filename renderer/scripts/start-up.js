@@ -2,6 +2,7 @@ import { stateVars, stateElements } from "./states.js";
 import * as HTMLs from "./HTMLs.js";
 import { assignHandlers } from "./handlers.js";
 import { loadPlaylist, playerController, playNext } from "./controllers.js";
+import { loader } from "./utils.js";
 
 async function startUp() {
     // Set first loaded playlist
@@ -26,27 +27,33 @@ async function startUp() {
     const scc = document.querySelector("#controlStateContainer");
     scc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("main", "play"));
     stateElements.stateControl = document.querySelector("#controlState");
-   
+
     window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
-    
 }
 
 // Sets custom background before everything else
 document.addEventListener("DOMContentLoaded", async () => {
     // Change page's background color
-    const appSettings =  await window.playlistSettings.getSettingsValue();
+    const appSettings = await window.playlistSettings.getSettingsValue();
     document.querySelector("body").style.background = appSettings.backgroundColor;
-})
+
+    // Temporary loading things
+    loader("on", "Loading playlist...")
+});
 
 window.onload = async () => {
     await startUp();
-    await loadPlaylist(stateVars.playlistSettings.playlistName).catch(async () => {
-        // Trying to fetch playlist based on `last-playlist.json` data if the playlist's json doesn't exist.
-        // Ideally, this function should check `last-playlist.json` and other important json like `appSettings.json` BEFORE the app launch, 
-        // will do this in the future.
-        await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID)
-        await loadPlaylist(stateVars.playlistSettings.playlistName)
-    });
+    await loadPlaylist(stateVars.playlistSettings.playlistName)
+        .catch(async () => {
+            // Trying to fetch playlist based on `last-playlist.json` data if the playlist's json doesn't exist.
+            // Ideally, this function should check `last-playlist.json` and other important json like `appSettings.json` BEFORE the app launch,
+            // will do this in the future.
+            await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
+            await loadPlaylist(stateVars.playlistSettings.playlistName);
+        }).finally(() => {
+            // Turn off loader
+            loader("off");
+        })
 
     // Assign handlers, duh!
     assignHandlers();

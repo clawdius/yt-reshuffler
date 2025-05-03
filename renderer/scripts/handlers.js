@@ -1,5 +1,5 @@
 import { stateVars, stateElements } from "./states.js";
-import { debounce, jumpTo, search, resetSearch } from "./utils.js";
+import { debounce, jumpTo, search, resetSearch, loader } from "./utils.js";
 import { changePlayer, resetPlaylist, playNext, playPrevious, playerController, getCurrentMusicPosition, randomizer } from "./controllers.js";
 
 export function assignSongsContainer() {
@@ -17,9 +17,11 @@ function assignButtons() {
     // Special case: Prevent multiple fetch simultaneously
     async function fetcherHandler() {
         stateElements.fetcher.removeEventListener("click", fetcherHandler);
+        loader("on", "Fetching data from YouTube...");
         await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
         await resetPlaylist(stateVars.playlistSettings.playlistName).then(() => {
             stateElements.fetcher.addEventListener("click", fetcherHandler);
+            loader("off");
         });
     };
     stateElements.fetcher.addEventListener("click", fetcherHandler);
@@ -40,8 +42,11 @@ function assignButtons() {
 
     // -- Reshuffler
     stateElements.reshuffler.addEventListener("click", async () => {
+        loader("on", "Reshufling playlist...")
         const shuffledName = await window.playlistAPI.shufflePlaylist(stateVars.playlistSettings.playlistName);
-        await resetPlaylist(shuffledName, stateElements.searchInput);
+        await resetPlaylist(shuffledName, stateElements.searchInput).then(() => {
+            loader("off");
+        });
     });
 
     // -- Randomizer
