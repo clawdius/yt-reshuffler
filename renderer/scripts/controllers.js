@@ -1,5 +1,5 @@
 import * as HTMLs from "./HTMLs.js";
-import { changeLayout, jumpTo, resetSearch } from "./utils.js";
+import { changeLayout, jumpTo, resetSearch, getCurrentMusicPosition } from "./utils.js";
 
 import { stateVars, stateElements } from "./states.js";
 import { assignSongsContainer } from "./handlers.js";
@@ -15,8 +15,8 @@ export function playerController(state, playingNow, embed) {
                 // Pausing a played video
                 embed ? null : player.pauseVideo();
 
-                mci.src = embed ? "/renderer/assets/pause-icon.svg" : "/renderer/assets/play-icon.svg"
-                scc.src = "/renderer/assets/pause-icon.svg"
+                mci.src = embed ? "/renderer/assets/pause-icon.svg" : "/renderer/assets/play-icon.svg";
+                scc.src = "/renderer/assets/pause-icon.svg";
 
                 embed ? window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) : window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
 
@@ -27,8 +27,8 @@ export function playerController(state, playingNow, embed) {
                 // Playing a paused / stopped video
                 embed ? null : player.playVideo();
 
-                mci.src = embed ? "/renderer/assets/play-icon.svg" : "/renderer/assets/pause-icon.svg"
-                scc.src = "/renderer/assets/play-icon.svg"
+                mci.src = embed ? "/renderer/assets/play-icon.svg" : "/renderer/assets/pause-icon.svg";
+                scc.src = "/renderer/assets/play-icon.svg";
 
                 embed ? window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`) : window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
 
@@ -59,7 +59,7 @@ export function changePlayer(musicContainer) {
         const mcc = document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`);
         mcc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("mini", "pause"));
 
-        stateElements.info.innerHTML = `<span style="font-size: 8pt">${mcc.dataset.pos}.</span> ${mcc.dataset.title}`
+        stateElements.info.innerHTML = `<span style="font-size: 8pt">${mcc.dataset.pos}.</span> ${mcc.dataset.title}`;
 
         // Remove the pauseIcon on previous song
         if (stateVars.playingBefore != null) {
@@ -70,7 +70,7 @@ export function changePlayer(musicContainer) {
         window.playlistAPI.changeWindowTitle(`Now Playing - ${musicContainer.dataset.title}`);
 
         player.loadVideoById(musicContainer.dataset.id);
-        player.playVideo();
+        return player.playVideo();
     }
 }
 
@@ -92,7 +92,7 @@ export async function loadPlaylist(name) {
     }
 
     // Assign containers function every playlist load
-    assignSongsContainer();
+    return assignSongsContainer();
 }
 
 export async function resetPlaylist(name) {
@@ -105,34 +105,35 @@ export async function resetPlaylist(name) {
     changeLayout("reset");
 
     // Resets search
-    resetSearch()
+    resetSearch();
 
     // Resets info
-    stateElements.info.innerHTML = ""
+    stateElements.info.innerHTML = "";
 
     // Scroll to first music
-    jumpTo(1, "smooth")
+    jumpTo(1, "smooth");
 
-    player.pauseVideo();
-}
-
-export function getCurrentMusicPosition() {
-    let pos = 0;
-
-    while (true) {
-        if (stateVars.songs[pos].dataset.id == stateVars.playingNow) {
-            return pos;
-        }
-
-        pos++;
-    }
+    return player.pauseVideo();
 }
 
 export function playNext() {
     if (stateVars.playingNow != null) {
-        let curr = getCurrentMusicPosition();
-        curr == stateVars.songs.length - 1 ? (curr = -1) : curr;
-        changePlayer(stateVars.songs[curr + 1]);
+        // "Play on visible" when the search bar is not empty
+        if (stateElements.searchInput.value != "") {
+            // Find the current music position based on visible container
+            const visibleCont = document.querySelectorAll(".music-container:not(.hidden)");
+
+            // Prevent empty visible container to be selected
+            if (visibleCont.length > 0) {
+                let curr = getCurrentMusicPosition("visible", visibleCont);
+                curr == visibleCont.length - 1 ? (curr = -1) : curr;
+                return changePlayer(visibleCont[curr + 1]);
+            }
+        } else {
+            let curr = getCurrentMusicPosition();
+            curr == stateVars.songs.length - 1 ? (curr = -1) : curr;
+            return changePlayer(stateVars.songs[curr + 1]);
+        }
     }
 }
 
@@ -140,16 +141,27 @@ export function playPrevious() {
     if (stateVars.playingNow != null) {
         // Play previous when the current time is under 3 secs, otherwise, resets the music
         if (Math.floor(player.getCurrentTime() <= 3)) {
-            let curr = getCurrentMusicPosition();
-            curr == 0 ? (curr = stateVars.songs.length) : curr;
-            changePlayer(stateVars.songs[curr - 1]);
+            if (stateElements.searchInput.value != "") {
+                // Find the current music position based on visible container
+                const visibleCont = document.querySelectorAll(".music-container:not(.hidden)");
+
+                if (visibleCont.length > 0) {
+                    let curr = getCurrentMusicPosition("visible", visibleCont);
+                    curr == 0 ? (curr = visibleCont.length) : curr;
+                    return changePlayer(visibleCont[curr - 1]);
+                }
+            } else {
+                let curr = getCurrentMusicPosition();
+                curr == 0 ? (curr = stateVars.songs.length) : curr;
+                return changePlayer(stateVars.songs[curr - 1]);
+            }
         } else {
-            player.seekTo(0);
+            return player.seekTo(0);
         }
     }
 }
 
 export function randomizer() {
-    const rIndex = Math.floor(Math.random() * stateVars.songs.length)
+    const rIndex = Math.floor(Math.random() * stateVars.songs.length);
     return changePlayer(stateVars.songs[rIndex]);
 }

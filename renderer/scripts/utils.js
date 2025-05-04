@@ -1,7 +1,6 @@
 import { loadOverlay } from "./HTMLs.js";
 import { stateVars, stateElements } from "./states.js";
 
-
 export function debounce(f, d) {
     let timer;
     return function (...a) {
@@ -10,6 +9,38 @@ export function debounce(f, d) {
             f.apply(this, a);
         }, d);
     };
+}
+
+export function getCurrentMusicPosition(type = "playlist", optCont = null) {
+    // Get current music position based on global playlist index (`stateVars.songs`)
+    if (type == "playlist") {
+        let pos = 0;
+        while (true) {
+            if (stateVars.songs[pos].dataset.id == stateVars.playingNow) {
+                return pos;
+            }
+            pos++;
+        }
+    }
+
+    // Get current music position based on visible music container supplied by `contOpt`
+    if (type == "visible") {
+        const curr = getCurrentMusicPosition() + 1;
+        let i = 0;
+
+        for (let d of optCont) {
+            if (d.dataset.pos == curr) {
+                const vArr = [...optCont];
+                for (let v of vArr) {
+                    if (v.dataset.pos == curr) {
+                        i = vArr.indexOf(v);
+                    }
+                }
+            }
+        }
+
+        return i;
+    }
 }
 
 export function search(n) {
@@ -56,6 +87,11 @@ export function search(n) {
     }
 }
 
+export function resetSearch() {
+    stateElements.searchInput.value = "";
+    return search("");
+}
+
 export function changeLayout(state) {
     switch (state) {
         case "reset":
@@ -90,35 +126,30 @@ export function changeLayout(state) {
     }
 }
 
-export function resetSearch() {
-    stateElements.searchInput.value = "";
-    return search("");
-}
-
 export function jumpTo(pos, type = "smooth") {
     return document.querySelector(`.music-container[data-pos="${pos}"]`).scrollIntoView({
-        behavior: type
-    })
+        behavior: type,
+    });
 }
 
 export function loader(type, text = "Loading") {
-    if(type == "on") {
+    if (type == "on") {
         const b = document.querySelector("body");
         b.insertAdjacentHTML("afterbegin", loadOverlay(text));
     }
-    if(type == "off") {
+    if (type == "off") {
         const c = document.querySelector("#loadOverlay");
         c.addEventListener("transitionend", () => {
             c.remove();
-        })
+        });
         c.style.opacity = 0;
     }
 }
 
 export function textPurifier(text) {
-    if(text.includes('"')) {
-        return `'${text}'`
+    if (text.includes('"')) {
+        return `'${text}'`;
     } else {
-        return `"${text}"`
+        return `"${text}"`;
     }
 }
