@@ -11,9 +11,9 @@ export function debounce(f, d) {
     };
 }
 
-export function getCurrentMusicPosition(type = "playlist", optCont = null) {
+export function getCurrentMusicPosition(type = "global", optCont = null) {
     // Get current music position based on global playlist index (`stateVars.songs`)
-    if (type == "playlist") {
+    if (type == "global") {
         let pos = 0;
         while (true) {
             if (stateVars.songs[pos].dataset.id == stateVars.playingNow) {
