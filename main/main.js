@@ -4,6 +4,7 @@ const path = require("node:path");
 
 const { setupMainHandlers } = require("./mainHandlers.js");
 const { registerSettings } = require("./utils/registerSettings.js");
+const { createDiscordClient } = require("./rpc/richPresence.js");
 
 let server,
     handlersData = {};
@@ -28,7 +29,6 @@ const createMainWindow = () => {
 };
 
 app.whenReady().then(async () => {
-
     // Register settings to `global.config`
     await registerSettings();
 
@@ -38,10 +38,15 @@ app.whenReady().then(async () => {
         stdio: ["ignore", "pipe", "pipe"],
     });
 
-    server.stdout.on("data", (d) => {
+    server.stdout.on("data", async (d) => {
         console.log(`[SERVER] ${d.toString().trim()}`);
 
         if (d.includes("Server started!")) {
+            // Call discord client if `useDiscord` == true
+            if (global.config.useDiscord) {
+                handlersData.rpc = await createDiscordClient();
+            }
+
             console.log("Creating main window");
             createMainWindow();
 

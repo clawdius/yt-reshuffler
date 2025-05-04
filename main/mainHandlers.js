@@ -2,14 +2,13 @@ const { ipcMain } = require("electron/main");
 const playlistUtils = require("./utils/playlistUtils");
 
 function setupMainHandlers(handlersData) {
-
     ipcMain.handle("get-last-playlist", async (e) => {
-        return await playlistUtils.getLastPlaylist()
-    })
+        return await playlistUtils.getLastPlaylist();
+    });
 
     ipcMain.handle("get-settings-value", async (e) => {
-        return global.config
-    })
+        return global.config;
+    });
 
     ipcMain.handle("load-playlist", async (e, name) => {
         return await playlistUtils.loadPlaylist(name);
@@ -26,11 +25,25 @@ function setupMainHandlers(handlersData) {
 
         await playlistUtils.savePlaylist(name, playlist);
         return name;
-    })
+    });
 
     ipcMain.handle("fetch-data-from-YT", async (e, id) => {
         return await playlistUtils.fetchDataFromYT(id);
-    })
+    });
+
+    // If `useDiscord` == true, create presence handler
+    if (global.config.useDiscord) {
+        ipcMain.handle("set-activity", (e, data) => {
+            const { title, details } = data;
+            handlersData.rpc.user.setActivity({
+                type: 2,
+                details: title,
+                state: details,
+                smallImageKey: "github-icon",
+                smallImageText: "YT-Reshuffler on Github"
+            });
+        });
+    }
 }
 
 module.exports = {

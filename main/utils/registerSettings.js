@@ -8,10 +8,16 @@ async function registerSettings() {
 
     // Backend Settings
     global.config.port = settings.port;
-    global.config.key = settings.key;
+    global.config.key = settings.keyYT;
 
     // App Settings
     global.config.backgroundColor = settings.backgroundColor;
+
+    // Experimental RPC
+    if(settings.useDiscord) {
+        global.config.useDiscord = settings.useDiscord;
+        global.config.discordClientId = settings.keyDC;
+    }
 }
 
 module.exports = {

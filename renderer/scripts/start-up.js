@@ -33,9 +33,12 @@ async function startUp() {
 
 // Sets custom background before everything else
 document.addEventListener("DOMContentLoaded", async () => {
+
+    // Assign settings from back
+    stateVars.appSettings = await window.playlistSettings.getSettingsValue();
+
     // Change page's background color
-    const appSettings = await window.playlistSettings.getSettingsValue();
-    document.querySelector("body").style.background = appSettings.backgroundColor;
+    document.querySelector("body").style.background = stateVars.appSettings.backgroundColor;
 
     // Temporary loading things
     loader("on", "Loading playlist...")

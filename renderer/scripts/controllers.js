@@ -72,6 +72,14 @@ export function changePlayer(musicContainer) {
 
         window.playlistAPI.changeWindowTitle(`Now Playing - ${musicContainer.dataset.title}`);
 
+        // Update presence if user activate from settings, added workaround for deleted video
+        if(stateVars.appSettings.useDiscord && musicContainer.dataset.title != "Deleted Video") {
+            window.richPresence.setActivity({
+                title: musicContainer.dataset.title,
+                details: musicContainer.dataset.channel
+            })
+        }
+
         player.loadVideoById(musicContainer.dataset.id);
         return player.playVideo();
     }
@@ -92,6 +100,14 @@ export async function loadPlaylist(name) {
         musicContainer = HTMLs.musicContainer(s.title, channelCleaner(s.channel), s.id, pos);
         stateElements.playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
         pos++;
+    }
+
+    // Default presence value for loading playlist
+    if(stateVars.appSettings.useDiscord) {
+        window.richPresence.setActivity({
+            title: name,
+            details: "Browsing musics",
+        })
     }
 
     // Assign containers function every playlist load
