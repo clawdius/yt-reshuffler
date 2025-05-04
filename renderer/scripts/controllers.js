@@ -1,5 +1,5 @@
 import * as HTMLs from "./HTMLs.js";
-import { changeLayout, jumpTo, resetSearch, getCurrentMusicPosition } from "./utils.js";
+import { changeLayout, jumpTo, resetSearch, getCurrentMusicPosition, channelCleaner } from "./utils.js";
 
 import { stateVars, stateElements } from "./states.js";
 import { assignSongsContainer } from "./handlers.js";
@@ -89,7 +89,7 @@ export async function loadPlaylist(name) {
 
     for (let s of res.songs) {
         // Not-so-hacky workaround because I don't want to use `createElement`
-        musicContainer = HTMLs.musicContainer(s.title, s.channel, s.id, pos);
+        musicContainer = HTMLs.musicContainer(s.title, channelCleaner(s.channel), s.id, pos);
         stateElements.playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
         pos++;
     }

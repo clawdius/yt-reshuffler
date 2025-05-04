@@ -154,3 +154,8 @@ export function textPurifier(text) {
         return `"${text}"`;
     }
 }
+
+export function channelCleaner(channel) {
+    if(channel.includes("- Topic")) return channel.replace(/- Topic/g, "");
+    return channel;
+}
