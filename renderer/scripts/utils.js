@@ -26,7 +26,8 @@ export function getCurrentMusicPosition(type = "global", optCont = null) {
     // Get current music position based on visible music container supplied by `contOpt`
     if (type == "visible") {
         const curr = getCurrentMusicPosition() + 1;
-        let i = 0;
+        // Default value is -1 so it'll start at 0, too complicated to be explained, only god knows
+        let i = -1;
 
         for (let d of optCont) {
             if (d.dataset.pos == curr) {

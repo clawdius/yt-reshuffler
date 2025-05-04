@@ -9,6 +9,9 @@ export function playerController(state, playingNow, embed) {
     const mci = document.querySelector(`.music-container[data-id="${playingNow}"] img`);
     const scc = document.querySelector(`#controlState img`);
 
+    const defWinTitle = `YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`
+    const currPlayWinTitle = `Now Playing - ${mcc.dataset.title}`
+
     if (stateVars.playingNow != null) {
         switch (state) {
             case 1: {
@@ -18,7 +21,7 @@ export function playerController(state, playingNow, embed) {
                 mci.src = embed ? "/renderer/assets/pause-icon.svg" : "/renderer/assets/play-icon.svg";
                 scc.src = "/renderer/assets/pause-icon.svg";
 
-                embed ? window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`) : window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`);
+                embed ? window.playlistAPI.changeWindowTitle(currPlayWinTitle) : window.playlistAPI.changeWindowTitle(defWinTitle);
 
                 break;
             }
@@ -30,7 +33,7 @@ export function playerController(state, playingNow, embed) {
                 mci.src = embed ? "/renderer/assets/play-icon.svg" : "/renderer/assets/pause-icon.svg";
                 scc.src = "/renderer/assets/play-icon.svg";
 
-                embed ? window.playlistAPI.changeWindowTitle(`YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`) : window.playlistAPI.changeWindowTitle(`Now Playing - ${mcc.dataset.title}`);
+                embed ? window.playlistAPI.changeWindowTitle(defWinTitle) : window.playlistAPI.changeWindowTitle(currPlayWinTitle);
 
                 break;
             }
@@ -39,7 +42,7 @@ export function playerController(state, playingNow, embed) {
 }
 
 export function changePlayer(musicContainer) {
-    // Adjust width for the first time
+    // Adjust width for active player state
     changeLayout("active");
 
     if (stateVars.playingNow != null) {
@@ -55,13 +58,13 @@ export function changePlayer(musicContainer) {
 
     // Change music
     if (stateVars.playingBefore != stateVars.playingNow) {
-        // Add pauseIcon to the current playing song
+        // Add stateIcon to the current playing song on right side
         const mcc = document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`);
         mcc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("mini", "pause"));
 
         stateElements.info.innerHTML = `<span style="font-size: 8pt">${mcc.dataset.pos}.</span> ${mcc.dataset.title}`;
 
-        // Remove the pauseIcon on previous song
+        // Remove the stateIcon on previous song
         if (stateVars.playingBefore != null) {
             const mcb = document.querySelector(`.music-container[data-id="${stateVars.playingBefore}"]`);
             mcb.removeChild(mcb.lastElementChild);
