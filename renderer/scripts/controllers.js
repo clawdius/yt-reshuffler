@@ -125,9 +125,14 @@ export function playNext() {
 
             // Prevent empty visible container to be selected
             if (visibleCont.length > 0) {
-                let curr = getCurrentMusicPosition("visible", visibleCont);
-                curr == visibleCont.length - 1 ? (curr = -1) : curr;
-                return changePlayer(visibleCont[curr + 1]);
+                // Case of only 1 search appear, go back to 0 second
+                if (visibleCont.length == 1) {
+                    return player.seekTo(0);
+                } else {
+                    let curr = getCurrentMusicPosition("visible", visibleCont);
+                    curr == visibleCont.length - 1 ? (curr = -1) : curr;
+                    return changePlayer(visibleCont[curr + 1]);
+                }
             }
         } else {
             let curr = getCurrentMusicPosition();
@@ -146,9 +151,14 @@ export function playPrevious() {
                 const visibleCont = document.querySelectorAll(".music-container:not(.hidden)");
 
                 if (visibleCont.length > 0) {
-                    let curr = getCurrentMusicPosition("visible", visibleCont);
-                    curr == 0 ? (curr = visibleCont.length) : curr;
-                    return changePlayer(visibleCont[curr - 1]);
+                    // Case of only 1 search appear, go back to 0 second
+                    if (visibleCont.length == 1) {
+                        return player.seekTo(0);
+                    } else {
+                        let curr = getCurrentMusicPosition("visible", visibleCont);
+                        curr == 0 ? (curr = visibleCont.length) : curr;
+                        return changePlayer(visibleCont[curr - 1]);
+                    }
                 }
             } else {
                 let curr = getCurrentMusicPosition();
