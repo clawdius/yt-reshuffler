@@ -16,25 +16,28 @@ Heavily inspired <sup><sub>(probably the only reason, to be honest)</sub></sup> 
 
 ## # (Not so) Frequently Asked Questions
 ### > Why Electron?
-I don't want to open my chrome with a gazillion extensions just to listen to [Didn't See That Coming](https://music.youtube.com/watch?v=t7zWExFJL5I) by Quinten Coblentz.
+- I don't want to open my chrome with a gazillion extensions just to listen to [Didn't See That Coming](https://music.youtube.com/watch?v=t7zWExFJL5I) by Quinten Coblentz.
 Besides, I just want to learn Electron. **You learn new technology by making something with it, right?**
 
 ### > Using Json to save things in the big 25? There's this technology called `database` 🥀🥀
-No thanks, using portable DB such as `sqlite` is overrated.
+- No thanks, using portable DB such as `sqlite` is overrated.
 
 ### > Why the heck do I need Express? I thought this is a "client-only" app?
-Youtube's embed gets mad if we directly use it with `file:///` protocol.
+- Youtube's embed gets mad if we directly use it with `file:///` protocol.
 Default Electron's way to open / load a file (as far as I know) is directly call the file via `file:///` protocol or `loadURL()`.
 Express is here just to serve static files, so it will use `loadURL()` and use the `localhost` protocol, thus the Youtube's embed will stop whining. Nothing fancy handy magic thing going on here.
 
 ### > The UI sucks, the icons are disproportionate, learn how to do UI/UX!
-This isn't even a question. I love to make sure the program run first, then beautify it, not the other way around.
+- This isn't even a question. I love to make sure the program run first, then beautify it, not the other way around.
 
 ### > When will you build the app into a final product?
-I aim to make the basic player utility (player control, multiple playlist support, etc.) to be ready first.
+- I aim to make the basic player utility (player control, multiple playlist support, etc.) to be ready first.
+
+### > You said you want to finish the basic player utility, why the hell is there already Discord Rich Presence?
+- I missclicked.
 
 ### > Can I use your Youtube API key?
-No.
+- No.
 
 ## # Disclaimer
 This application is an independent project and is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Google LLC, YouTube, or any of their subsidiaries or affiliates. All trademarks, logos, and brand names are the property of their respective owners. The use of YouTube’s name and services is solely for descriptive purposes and does not imply any endorsement.
