@@ -13,7 +13,7 @@ function setupMainHandlers(handlersData) {
 
     ipcMain.handle("load-playlist", async (e, name) => {
         return await playlistUtils.loadPlaylist(name).catch((e) => {
-            if (e) console.log("Loading player error");
+            if (e) console.log("[ERROR] Loading player error");
         });
     });
 
