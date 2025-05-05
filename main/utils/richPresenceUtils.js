@@ -4,7 +4,7 @@ function rpcSetActivity(handlersData, rpcPayload) {
         type: 2,
         details: title,
         state: details,
-        smallImageKey: id != "" ? "app-icon" : "github-icon",
+        smallImageKey: id != "" ? "" : "github-icon",
         smallImageText: "YT-Reshuffler on Github",
         largeImageText: playlistName != "" ? playlistName : "",
         largeImageKey: id != "" ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : ""
