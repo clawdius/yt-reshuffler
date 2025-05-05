@@ -17,13 +17,25 @@ function assignButtons() {
     // Special case: Prevent multiple fetch simultaneously
     async function fetcherHandler() {
         stateElements.fetcher.removeEventListener("click", fetcherHandler);
+
+         // Weird pause placement, but ok
+         player.pauseVideo()
+
+         // "Fetching musics" rich presence
+         if (stateVars.appSettings.useDiscord) {
+             window.richPresence.setActivity({
+                 title: stateVars.playlistSettings.playlistName,
+                 details: "Fetching musics from YouTube",
+             });
+         }
+
         loader("on", "Fetching data from YouTube...");
         await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
         await resetPlaylist(stateVars.playlistSettings.playlistName).then(() => {
             stateElements.fetcher.addEventListener("click", fetcherHandler);
             loader("off");
         });
-    };
+    }
     stateElements.fetcher.addEventListener("click", fetcherHandler);
 
     // -- Search
@@ -35,14 +47,14 @@ function assignButtons() {
     // -- Clear Search
     stateElements.clearSearch.addEventListener("click", (e) => {
         resetSearch();
-        if(stateVars.playingNow != null) {
-            jumpTo(getCurrentMusicPosition()+1, "instant");
+        if (stateVars.playingNow != null) {
+            jumpTo(getCurrentMusicPosition() + 1, "instant");
         }
     });
 
     // -- Reshuffler
     stateElements.reshuffler.addEventListener("click", async () => {
-        loader("on", "Reshufling playlist...")
+        loader("on", "Reshufling playlist...");
         const shuffledName = await window.playlistAPI.shufflePlaylist(stateVars.playlistSettings.playlistName);
         await resetPlaylist(shuffledName, stateElements.searchInput).then(() => {
             loader("off");
@@ -53,31 +65,31 @@ function assignButtons() {
     stateElements.randomizer.addEventListener("click", () => {
         randomizer();
         resetSearch();
-        jumpTo(getCurrentMusicPosition()+1, "instant");
-    })
+        jumpTo(getCurrentMusicPosition() + 1, "instant");
+    });
 
     // -- Main Controls
     // Previous button
     stateElements.previousControl.addEventListener("click", () => {
         playPrevious();
-        jumpTo(getCurrentMusicPosition()+1)
+        jumpTo(getCurrentMusicPosition() + 1);
     });
 
     // Next button
     stateElements.nextControl.addEventListener("click", () => {
         playNext();
-        jumpTo(getCurrentMusicPosition()+1)
+        jumpTo(getCurrentMusicPosition() + 1);
     });
 
     // State Control button
     stateElements.stateControl.addEventListener("click", () => {
-        playerController(player.getPlayerState(), stateVars.playingNow, false)
-    })
+        playerController(player.getPlayerState(), stateVars.playingNow, false);
+    });
 
     // Info
     stateElements.info.addEventListener("click", () => {
-        jumpTo(getCurrentMusicPosition()+1);
-    })
+        jumpTo(getCurrentMusicPosition() + 1);
+    });
 }
 
 function assignCustomShortcuts() {
