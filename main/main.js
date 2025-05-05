@@ -10,7 +10,7 @@ let server,
     handlersData = {};
 
 const createMainWindow = () => {
-    win = new BrowserWindow({
+    let win = new BrowserWindow({
         width: 960,
         height: 660,
         icon: path.join(__dirname, "../icon.png"),
@@ -33,7 +33,7 @@ app.whenReady().then(async () => {
     await registerSettings();
 
     // Create express server instance
-    server = spawn("node", ["main/server/server.js"], {
+    let server = spawn("node", ["main/server/server.js"], {
         detached: false,
         stdio: ["ignore", "pipe", "pipe"],
     });

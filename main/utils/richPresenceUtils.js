@@ -10,7 +10,7 @@ function rpcSetActivity(handlersData, rpcPayload) {
         smallImageKey: id != "" ? "" : "github-icon",
         smallImageText: "YT-Reshuffler on Github",
         largeImageText: playlistName != "" ? playlistName : "",
-        largeImageKey: id != "" && title != "Deleted Video" ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : ""
+        largeImageKey: id != "" ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : ""
     });
 }
 
