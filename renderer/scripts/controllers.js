@@ -9,8 +9,8 @@ export function playerController(state, playingNow, embed) {
     const mci = document.querySelector(`.music-container[data-id="${playingNow}"] img`);
     const scc = document.querySelector(`#controlState img`);
 
-    const defWinTitle = `YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`
-    const currPlayWinTitle = `Now Playing - ${mcc.dataset.title}`
+    const defWinTitle = `YT-Reshuffler - ${stateVars.playlistSettings.playlistName}`;
+    const currPlayWinTitle = `Now Playing - ${mcc.dataset.title}`;
 
     if (stateVars.playingNow != null) {
         switch (state) {
@@ -73,13 +73,21 @@ export function changePlayer(musicContainer) {
         window.playlistAPI.changeWindowTitle(`Now Playing - ${musicContainer.dataset.title}`);
 
         // Update presence if user activate from settings, added workaround for deleted video
-        if(stateVars.appSettings.useDiscord && musicContainer.dataset.title != "Deleted Video") {
-            window.richPresence.setActivity({
-                title: musicContainer.dataset.title,
-                details: musicContainer.dataset.channel,
-                id: musicContainer.dataset.id,
-                playlistName: stateVars.playlistSettings.playlistName,
-            })
+        if (stateVars.appSettings.useDiscord && musicContainer.dataset.title != "Deleted Video") {
+            setTimeout(() => {
+                window.richPresence.setActivity({
+                    title: musicContainer.dataset.title,
+                    details: musicContainer.dataset.channel,
+                    id: musicContainer.dataset.id,
+                    playlistName: stateVars.playlistSettings.playlistName,
+                    buttons: [
+                        {
+                            label: "Listen on Youtube Music",
+                            url: `https://music.youtube.com/watch?v=${musicContainer.dataset.id}`,
+                        },
+                    ],
+                });
+            }, 1000);
         }
 
         player.loadVideoById(musicContainer.dataset.id);
@@ -105,11 +113,17 @@ export async function loadPlaylist(name) {
     }
 
     // Default presence value for loading playlist
-    if(stateVars.appSettings.useDiscord) {
+    if (stateVars.appSettings.useDiscord) {
         window.richPresence.setActivity({
             title: name,
             details: "Browsing musics",
-        })
+            buttons: [
+                {
+                    label: "App Repository",
+                    url: "https://github.com/clawdius/yt-reshuffler",
+                },
+            ],
+        });
     }
 
     // Assign containers function every playlist load
