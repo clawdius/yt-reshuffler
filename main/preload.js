@@ -14,5 +14,5 @@ contextBridge.exposeInMainWorld("playlistAPI", {
 
 // Register discord API
 contextBridge.exposeInMainWorld("richPresence", {
-    setActivity: (data) => ipcRenderer.invoke("set-activity", data),
+    setActivity: (rpcPayload) => ipcRenderer.invoke("set-activity", rpcPayload),
 });

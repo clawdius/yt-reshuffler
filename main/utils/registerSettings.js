@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 
-global.config = {}
+global.config = {};
 
 async function registerSettings() {
     // Registers settings value to global object
@@ -14,10 +14,7 @@ async function registerSettings() {
     global.config.backgroundColor = settings.backgroundColor;
 
     // Experimental RPC
-    if(settings.useDiscord) {
-        global.config.useDiscord = settings.useDiscord;
-        global.config.discordClientId = settings.keyDC;
-    }
+    if (settings.useDiscord) global.config.useDiscord = settings.useDiscord;
 }
 
 module.exports = {

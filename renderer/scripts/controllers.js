@@ -76,7 +76,8 @@ export function changePlayer(musicContainer) {
         if(stateVars.appSettings.useDiscord && musicContainer.dataset.title != "Deleted Video") {
             window.richPresence.setActivity({
                 title: musicContainer.dataset.title,
-                details: musicContainer.dataset.channel
+                details: musicContainer.dataset.channel,
+                playlistName: stateVars.playlistSettings.playlistName
             })
         }
 

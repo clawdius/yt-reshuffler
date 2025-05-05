@@ -1,5 +1,6 @@
 const { ipcMain } = require("electron/main");
 const playlistUtils = require("./utils/playlistUtils");
+const { rpcSetActivity } = require("./utils/richPresenceUtils");
 
 function setupMainHandlers(handlersData) {
     ipcMain.handle("get-last-playlist", async (e) => {
@@ -33,15 +34,8 @@ function setupMainHandlers(handlersData) {
 
     // If `useDiscord` == true, create presence handler
     if (global.config.useDiscord) {
-        ipcMain.handle("set-activity", (e, data) => {
-            const { title, details } = data;
-            handlersData.rpc.user.setActivity({
-                type: 2,
-                details: title,
-                state: details,
-                smallImageKey: "github-icon",
-                smallImageText: "YT-Reshuffler on Github"
-            });
+        ipcMain.handle("set-activity", (e, rpcPayLoad) => {
+            return rpcSetActivity(handlersData, rpcPayLoad)
         });
     }
 }

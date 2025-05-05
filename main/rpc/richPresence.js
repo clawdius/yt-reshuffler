@@ -1,7 +1,8 @@
 const { Client } = require("@xhayper/discord-rpc");
 
 async function createDiscordClient() {
-    const cred = global.config.discordClientId;
+    // God forbid I expose this client ID
+    const cred = "888400543461019658";
 
     const rpc = new Client({
         clientId: cred,
