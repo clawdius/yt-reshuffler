@@ -77,7 +77,8 @@ export function changePlayer(musicContainer) {
             window.richPresence.setActivity({
                 title: musicContainer.dataset.title,
                 details: musicContainer.dataset.channel,
-                playlistName: stateVars.playlistSettings.playlistName
+                id: musicContainer.dataset.id,
+                playlistName: stateVars.playlistSettings.playlistName,
             })
         }
 

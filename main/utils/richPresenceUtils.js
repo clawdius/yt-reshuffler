@@ -1,12 +1,13 @@
 function rpcSetActivity(handlersData, rpcPayload) {
-    const { title, details, playlistName = "" } = rpcPayload;
+    const { title, details, playlistName = "", id = "" } = rpcPayload;
     handlersData.rpc.user.setActivity({
         type: 2,
         details: title,
         state: details,
-        smallImageKey: "github-icon",
+        smallImageKey: id != "" ? "app-icon" : "github-icon",
         smallImageText: "YT-Reshuffler on Github",
-        largeImageText: playlistName != "" ? playlistName : ""
+        largeImageText: playlistName != "" ? playlistName : "",
+        largeImageKey: id != "" ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : ""
     });
 }
 
