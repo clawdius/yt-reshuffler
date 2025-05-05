@@ -12,7 +12,9 @@ function setupMainHandlers(handlersData) {
     });
 
     ipcMain.handle("load-playlist", async (e, name) => {
-        return await playlistUtils.loadPlaylist(name);
+        return await playlistUtils.loadPlaylist(name).catch((e) => {
+            if (e) console.log("Loading player error");
+        });
     });
 
     ipcMain.handle("change-window-title", (e, title) => {
@@ -35,7 +37,7 @@ function setupMainHandlers(handlersData) {
     // If `useDiscord` == true, create presence handler
     if (global.config.useDiscord) {
         ipcMain.handle("set-activity", (e, rpcPayLoad) => {
-            return rpcSetActivity(handlersData, rpcPayLoad)
+            return rpcSetActivity(handlersData, rpcPayLoad);
         });
     }
 }
