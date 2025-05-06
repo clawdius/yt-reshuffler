@@ -11,11 +11,11 @@ async function createDiscordClient() {
     return rpc
         .login()
         .then(() => {
-            console.log(`[DiscordPresence] Rich Presence Established`);
+            console.log(`[DPRESENCE] Rich Presence established`);
             return rpc;
         })
         .catch((e) => {
-            console.log(`[DiscordPresence] Error:`, e);
+            console.log(`[DPRESENCE] Error:`, e);
             return null;
         });
 }

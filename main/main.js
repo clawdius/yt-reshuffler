@@ -44,13 +44,18 @@ app.whenReady().then(async () => {
         if (d.includes("Server started!")) {
             // Call discord client if `useDiscord` == true
             if (global.config.useDiscord) {
-                handlersData.rpc = await createDiscordClient();
+                try {
+                    handlersData.rpc = await createDiscordClient();
+                } catch (e) {
+                    // Temporarily disable presence if `createDiscordClient()` failed to initialize
+                    global.config.useDiscord = false;
+                }
             }
 
-            console.log("Creating main window");
+            console.log("[APP] Creating main window");
             createMainWindow();
 
-            console.log("Registering handlers");
+            console.log("[APP] Registering handlers");
             setupMainHandlers(handlersData);
         }
     });

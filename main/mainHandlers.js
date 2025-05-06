@@ -36,8 +36,8 @@ function setupMainHandlers(handlersData) {
 
     // If `useDiscord` == true, create presence handler
     if (global.config.useDiscord) {
-        ipcMain.handle("set-activity", (e, rpcPayLoad) => {
-            return rpcSetActivity(handlersData, rpcPayLoad);
+        ipcMain.handle("set-activity", (e, frontPayLoad) => {
+            if (handlersData.rpc) return rpcSetActivity(handlersData, frontPayLoad);
         });
     }
 }

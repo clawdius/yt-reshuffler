@@ -80,12 +80,6 @@ export function changePlayer(musicContainer) {
                     details: musicContainer.dataset.channel,
                     id: musicContainer.dataset.id,
                     playlistName: stateVars.playlistSettings.playlistName,
-                    buttons: [
-                        {
-                            label: "Listen on Youtube Music",
-                            url: `https://music.youtube.com/watch?v=${musicContainer.dataset.id}`,
-                        },
-                    ],
                 });
             }, 1000);
         }
@@ -117,12 +111,6 @@ export async function loadPlaylist(name) {
         window.richPresence.setActivity({
             title: name,
             details: "Browsing musics",
-            buttons: [
-                {
-                    label: "App Repository",
-                    url: "https://github.com/clawdius/yt-reshuffler",
-                },
-            ],
         });
     }
 
