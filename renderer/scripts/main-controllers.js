@@ -80,6 +80,7 @@ export function changePlayer(musicContainer) {
                     details: musicContainer.dataset.channel,
                     id: musicContainer.dataset.id,
                     playlistName: stateVars.playlistSettings.playlistName,
+                    thumb: musicContainer.dataset.thumb
                 });
             }, 1000);
         }
@@ -101,7 +102,7 @@ export async function loadPlaylist(name) {
 
     for (let s of res.songs) {
         // Not-so-hacky workaround because I don't want to use `createElement`
-        musicContainer = HTMLs.musicContainer(s.title, channelCleaner(s.channel), s.id, pos);
+        musicContainer = HTMLs.musicContainer(s.title, channelCleaner(s.channel), s.id, pos, s.thumbnail);
         stateElements.playlistContainer.insertAdjacentHTML("beforeend", musicContainer);
         pos++;
     }

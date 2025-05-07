@@ -1,5 +1,5 @@
 function rpcSetActivity(handlersData, frontPayload) {
-    const { title, details, playlistName = null, id = null } = frontPayload;
+    const { title, details, playlistName = null, id = null, thumb } = frontPayload;
 
     let rpcPayload = {
         type: 2,
@@ -21,7 +21,7 @@ function rpcSetActivity(handlersData, frontPayload) {
         delete rpcPayload.smallImageKey;
         delete rpcPayload.smallImageText;
         rpcPayload.largeImageText = playlistName;
-        rpcPayload.largeImageKey = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+        rpcPayload.largeImageKey = thumb == "true" ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : "app-icon";
         rpcPayload.buttons = [
             {
                 label: "Listen on Youtube Music",

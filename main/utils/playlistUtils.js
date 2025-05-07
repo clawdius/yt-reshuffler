@@ -30,6 +30,7 @@ async function fetchDataFromYT(id) {
                 "title": d.snippet.title,
                 "channel": d.snippet.videoOwnerChannelTitle != undefined ? d.snippet.videoOwnerChannelTitle : "Deleted Video",
                 "id": d.snippet.resourceId.videoId,
+                "thumbnail": d.snippet.thumbnails.maxres ? true : false
             });
         }
 

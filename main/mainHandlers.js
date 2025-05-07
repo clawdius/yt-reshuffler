@@ -1,6 +1,6 @@
 const { ipcMain } = require("electron/main");
 const playlistUtils = require("./utils/playlistUtils");
-const { rpcSetActivity } = require("./utils/richPresenceUtils");
+const { rpcSetActivity } = require("./rpc/richPresenceUtils");
 
 function setupMainHandlers(handlersData) {
     ipcMain.handle("get-last-playlist", async (e) => {
