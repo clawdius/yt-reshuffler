@@ -2,7 +2,7 @@ import * as HTMLs from "./HTMLs.js";
 import { changeLayout, jumpTo, resetSearch, getCurrentMusicPosition, channelCleaner } from "./utils.js";
 
 import { stateVars, stateElements } from "./states.js";
-import { assignSongsContainer } from "./handlers.js";
+import { assignSongsContainer } from "./main-handlers.js";
 
 export function playerController(state, playingNow, embed) {
     const mcc = document.querySelector(`.music-container[data-id="${playingNow}"]`);
@@ -73,7 +73,7 @@ export function changePlayer(musicContainer) {
         window.playlistAPI.changeWindowTitle(`Now Playing - ${musicContainer.dataset.title}`);
 
         // Update presence if user activate from settings, added workaround for deleted video
-        if (stateVars.appSettings.useDiscord && musicContainer.dataset.title != "Deleted Video") {
+        if (stateVars.appSettings.useDiscord && musicContainer.dataset.title != "Deleted video") {
             setTimeout(() => {
                 window.richPresence.setActivity({
                     title: musicContainer.dataset.title,

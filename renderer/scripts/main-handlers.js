@@ -1,6 +1,6 @@
 import { stateVars, stateElements } from "./states.js";
 import { debounce, jumpTo, search, resetSearch, loader, getCurrentMusicPosition } from "./utils.js";
-import { changePlayer, resetPlaylist, playNext, playPrevious, playerController, randomizer } from "./controllers.js";
+import { changePlayer, resetPlaylist, playNext, playPrevious, playerController, randomizer } from "./main-controllers.js";
 
 export function assignSongsContainer() {
     stateVars.songs = document.querySelectorAll(".music-container");

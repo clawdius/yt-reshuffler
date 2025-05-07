@@ -1,7 +1,7 @@
 import { stateVars, stateElements } from "./states.js";
 import * as HTMLs from "./HTMLs.js";
-import { assignHandlers } from "./handlers.js";
-import { loadPlaylist, playerController, playNext } from "./controllers.js";
+import { assignHandlers } from "./main-handlers.js";
+import { loadPlaylist, playerController, playNext } from "./main-controllers.js";
 import { loader } from "./utils.js";
 
 async function startUp() {
