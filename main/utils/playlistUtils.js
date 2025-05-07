@@ -1,3 +1,5 @@
+const { apiLogger } = require("./loggerSettings");
+
 const fs = require("fs").promises;
 
 async function fetchDataFromYT(id) {
@@ -34,11 +36,11 @@ async function fetchDataFromYT(id) {
             });
         }
 
-        console.log(`Fetching playlist items from Youtube (${counter})`);
+        apiLogger.info(`Fetching playlist items from Youtube (${counter})`, { type: "YT" });
 
         if (!songs.nextPageToken) {
             playlist.metadata.count = songs.pageInfo.totalResults;
-            console.log(`Done fetching ${playlist.metadata.count} songs`);
+            apiLogger.info(`Done fetching ${playlist.metadata.count} songs`, { type: "YT" });
             break;
         }
 

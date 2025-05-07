@@ -1,6 +1,7 @@
 const { ipcMain } = require("electron/main");
 const playlistUtils = require("./utils/playlistUtils");
 const { rpcSetActivity } = require("./rpc/richPresenceUtils");
+const { appLogger } = require("./utils/loggerSettings");
 
 function setupMainHandlers(handlersData) {
     ipcMain.handle("get-last-playlist", async (e) => {
@@ -13,7 +14,7 @@ function setupMainHandlers(handlersData) {
 
     ipcMain.handle("load-playlist", async (e, name) => {
         return await playlistUtils.loadPlaylist(name).catch((e) => {
-            if (e) console.log("[ERROR] Loading player error");
+            if (e) appLogger.error("Error loading playlist!");
         });
     });
 

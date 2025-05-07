@@ -1,4 +1,5 @@
 const { Client } = require("@xhayper/discord-rpc");
+const { apiLogger } = require("../utils/loggerSettings");
 
 async function createDiscordClient() {
     // God forbid I expose this client ID
@@ -11,11 +12,11 @@ async function createDiscordClient() {
     return rpc
         .login()
         .then(() => {
-            console.log(`[DPRESENCE] Rich Presence established`);
+            apiLogger.info("Discord presence established", { type: "RPC" });
             return rpc;
         })
         .catch((e) => {
-            console.log(`[DPRESENCE] Error:`, e);
+            apiLogger.error(e, { type: "RPC" });
             return null;
         });
 }

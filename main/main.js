@@ -5,6 +5,7 @@ const path = require("node:path");
 const { setupMainHandlers } = require("./mainHandlers.js");
 const { registerSettings } = require("./utils/registerSettings.js");
 const { createDiscordClient } = require("./rpc/richPresence.js");
+const { appLogger, serverLogger } = require("./utils/loggerSettings.js");
 
 let server,
     handlersData = {};
@@ -39,7 +40,7 @@ app.whenReady().then(async () => {
     });
 
     server.stdout.on("data", async (d) => {
-        console.log(`[SERVER] ${d.toString().trim()}`);
+        serverLogger.info(`${d.toString().trim()}`);
 
         if (d.includes("Server started!")) {
             // Call discord client if `useDiscord` == true
@@ -52,17 +53,18 @@ app.whenReady().then(async () => {
                 }
             }
 
-            console.log("[APP] Creating main window");
+            appLogger.info("Creating main window");
             createMainWindow();
 
-            console.log("[APP] Registering handlers");
+            appLogger.info("Attaching main handlers");
             setupMainHandlers(handlersData);
         }
     });
 });
 
 app.on("window-all-closed", () => {
-    console.log("Exiting app & turning off express");
+    serverLogger.info("Turning off server");
     server.kill();
+    appLogger.info("Exiting app");
     app.quit();
 });
