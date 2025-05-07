@@ -11,7 +11,7 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^35.0.3"
+    "electron": "^35.2.2"
   },
   "dependencies": {
     "@xhayper/discord-rpc": "^1.2.1",
