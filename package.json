@@ -16,6 +16,7 @@
   "dependencies": {
     "@xhayper/discord-rpc": "^1.2.1",
     "discord.js": "^14.19.3",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "winston": "^3.17.0"
   }
 }
