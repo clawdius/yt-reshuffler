@@ -4,7 +4,7 @@ function rpcSetActivity(handlersData, frontPayload) {
     let rpcPayload = {
         type: 2,
         details: title,
-        state: details,
+        state: details ? details : "null",
         smallImageKey: "github-icon",
         smallImageText: "YT-Reshuffler on Github",
         startTimestamp: new Date(),
