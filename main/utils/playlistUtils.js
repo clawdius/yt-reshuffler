@@ -28,16 +28,16 @@ async function fetchDataFromYT(id) {
         for (let d of songs.items) {
             cleanItems.push({
                 "title": d.snippet.title,
-                "channel": d.snippet.videoOwnerChannelTitle != undefined ? d.snippet.videoOwnerChannelTitle : "Deleted Video",
+                "channel": d.snippet.videoOwnerChannelTitle == undefined ? "Deleted Video" : d.snippet.videoOwnerChannelTitle.includes("Release - Topic") ? "Various Artists" : d.snippet.videoOwnerChannelTitle,
                 "id": d.snippet.resourceId.videoId,
-                "thumbnail": d.snippet.thumbnails.maxres ? true : false
+                "thumbnail": d.snippet.thumbnails.maxres ? true : false,
             });
         }
 
         console.log(`Fetching playlist items from Youtube (${counter})`);
 
-        if(!songs.nextPageToken) {
-            playlist.metadata.count = songs.pageInfo.totalResults
+        if (!songs.nextPageToken) {
+            playlist.metadata.count = songs.pageInfo.totalResults;
             console.log(`Done fetching ${playlist.metadata.count} songs`);
             break;
         }
