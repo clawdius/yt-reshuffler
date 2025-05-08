@@ -13,9 +13,7 @@ function setupMainHandlers(handlersData) {
     });
 
     ipcMain.handle("load-playlist", async (e, name) => {
-        return await playlistUtils.loadPlaylist(name).catch((e) => {
-            if (e) appLogger.error("Error loading playlist!");
-        });
+        return await playlistUtils.loadPlaylist(name);
     });
 
     ipcMain.handle("change-window-title", (e, title) => {

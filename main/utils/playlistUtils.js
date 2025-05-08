@@ -1,4 +1,4 @@
-const { apiLogger } = require("./loggerSettings");
+const { apiLogger, appLogger } = require("./loggerSettings");
 
 const fs = require("fs").promises;
 
@@ -66,11 +66,19 @@ async function shufflePlaylist(list) {
 }
 
 async function savePlaylist(name, playlist) {
-    return await fs.writeFile(`./playlists/${name}-shuffled.json`, JSON.stringify(playlist, null, 2));
+    try {
+        return await fs.writeFile(`./playlists/${name}-shuffled.json`, JSON.stringify(playlist, null, 2));
+    } catch (e) {
+        appLogger.error(`Failed to save playlist (${e})`);
+    }
 }
 
 async function loadPlaylist(name) {
-    return JSON.parse(await fs.readFile(`./playlists/${name}-shuffled.json`));
+    try {
+        return JSON.parse(await fs.readFile(`./playlists/${name}-shuffled.json`));
+    } catch (e) {
+        appLogger.error(`Failed to load playlist (${e})`);
+    }
 }
 
 async function getLastPlaylist() {
