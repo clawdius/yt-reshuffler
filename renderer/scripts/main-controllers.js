@@ -80,7 +80,7 @@ export function changePlayer(musicContainer) {
                     details: musicContainer.dataset.channel,
                     id: musicContainer.dataset.id,
                     playlistName: stateVars.playlistSettings.playlistName,
-                    thumb: musicContainer.dataset.thumb
+                    thumb: musicContainer.dataset.thumb,
                 });
             }, 1000);
         }
@@ -142,55 +142,61 @@ export async function resetPlaylist(name) {
 
 export function playNext() {
     if (stateVars.playingNow != null) {
-        // "Play on visible" when the search bar is not empty
-        if (stateElements.searchInput.value != "") {
-            // Find the current music position based on visible container
-            const visibleCont = document.querySelectorAll(".music-container:not(.hidden)");
-
-            // Prevent empty visible container to be selected
-            if (visibleCont.length > 0) {
-                // Case of only 1 search appear, go back to 0 second
-                if (visibleCont.length == 1) {
-                    return player.seekTo(0);
-                } else {
-                    let curr = getCurrentMusicPosition("visible", visibleCont);
-                    curr == visibleCont.length - 1 ? (curr = -1) : curr;
-                    return changePlayer(visibleCont[curr + 1]);
-                }
-            }
-        } else {
+        // -- Empty search value, just play next.
+        if (stateElements.searchInput.value === "") {
             let curr = getCurrentMusicPosition();
             curr == stateVars.songs.length - 1 ? (curr = -1) : curr;
             return changePlayer(stateVars.songs[curr + 1]);
+        }
+
+        // -- Non-empty search value
+        // List all the non-hidden music container
+        const visibleCont = document.querySelectorAll(".music-container:not(.hidden)");
+
+        // Prevent empty visible container to be selected
+        if (visibleCont.length > 0) {
+            // Case of only 1 search appear, go back to 0 second
+            if (visibleCont.length == 1) {
+                return player.seekTo(0);
+            } else {
+                // Find the current music position based on visible container
+                let curr = getCurrentMusicPosition("visible", visibleCont);
+                curr == visibleCont.length - 1 ? (curr = -1) : curr;
+                return changePlayer(visibleCont[curr + 1]);
+            }
         }
     }
 }
 
 export function playPrevious() {
     if (stateVars.playingNow != null) {
-        // Play previous when the current time is under 3 secs, otherwise, resets the music
-        if (Math.floor(player.getCurrentTime() <= 3)) {
-            if (stateElements.searchInput.value != "") {
-                // Find the current music position based on visible container
-                const visibleCont = document.querySelectorAll(".music-container:not(.hidden)");
-
-                if (visibleCont.length > 0) {
-                    // Case of only 1 search appear, go back to 0 second
-                    if (visibleCont.length == 1) {
-                        return player.seekTo(0);
-                    } else {
-                        let curr = getCurrentMusicPosition("visible", visibleCont);
-                        curr == 0 ? (curr = visibleCont.length) : curr;
-                        return changePlayer(visibleCont[curr - 1]);
-                    }
-                }
-            } else {
-                let curr = getCurrentMusicPosition();
-                curr == 0 ? (curr = stateVars.songs.length) : curr;
-                return changePlayer(stateVars.songs[curr - 1]);
-            }
-        } else {
+        // -- Reset music
+        // Resets to 0 second if the music current time is more than 3 seconds
+        if (Math.floor(player.getCurrentTime() >= 3)) {
             return player.seekTo(0);
+        }
+
+        // -- Empty search value
+        if (stateElements.searchInput.value === "") {
+            let curr = getCurrentMusicPosition();
+            curr == 0 ? (curr = stateVars.songs.length) : curr;
+            return changePlayer(stateVars.songs[curr - 1]);
+        }
+
+        // -- Non-empty search value
+        // List all the non-hidden music container
+        const visibleCont = document.querySelectorAll(".music-container:not(.hidden)");
+
+        if (visibleCont.length > 0) {
+            // Case of only 1 search appear, go back to 0 second
+            if (visibleCont.length == 1) {
+                return player.seekTo(0);
+            } else {
+                // Find the current music position based on visible container
+                let curr = getCurrentMusicPosition("visible", visibleCont);
+                curr == 0 ? (curr = visibleCont.length) : curr;
+                return changePlayer(visibleCont[curr - 1]);
+            }
         }
     }
 }
