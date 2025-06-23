@@ -60,6 +60,7 @@ export function changePlayer(musicContainer) {
     if (stateVars.playingBefore != stateVars.playingNow) {
         // Add stateIcon to the current playing song on right side
         const mcc = document.querySelector(`.music-container[data-id="${stateVars.playingNow}"]`);
+        mcc.classList.add("playing");
         mcc.insertAdjacentHTML("beforeend", HTMLs.stateIcon("mini", "pause"));
 
         stateElements.info.innerHTML = `<span style="font-size: 8pt">${mcc.dataset.pos}.</span> ${mcc.dataset.title}`;
@@ -67,6 +68,7 @@ export function changePlayer(musicContainer) {
         // Remove the stateIcon on previous song
         if (stateVars.playingBefore != null) {
             const mcb = document.querySelector(`.music-container[data-id="${stateVars.playingBefore}"]`);
+            mcb.classList.remove("playing");
             mcb.removeChild(mcb.lastElementChild);
         }
 
