@@ -122,6 +122,7 @@ body {
 #controlPrevious {
     cursor: pointer;
     border-radius: var(--container-radius);
+    transform: scale(1.15)
 }
 
 #controlNext:hover,
