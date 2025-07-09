@@ -49,53 +49,63 @@ export function search(n) {
         stateElements.clearSearch.classList.add("block");
         stateElements.clearSearch.classList.remove("hidden");
 
-        // const query = n.toLowerCase();
-        // const advQuery = {
-        //     "p:": "pos",
-        //     "a:": "channel"
-        // }
+        const query = n.toLowerCase();
+        const advQuery = {
+            "p:": "pos",
+            "a:": "channel",
+        };
 
-        // let type = advQuery.hasOwnProperty(query.substring(0, 2)) ? "advanced" : "general";
+        let type = advQuery.hasOwnProperty(query.substring(0, 2)) ? "advanced" : "general";
+        let procCont, filterSearch;
 
-        // for (let d of stateVars.songs) {
-
-        //     let procCont;
-
-        //     switch (type) {
-        //         case "advanced":
-        //             procCont = query
-        //             break;
-        //     }
-        // }
-
-        if (n.substring(0, 2) == "p:") {
-            // Search based on position
-            for (let d of stateVars.songs) {
-                if (!d.dataset.pos.toLowerCase().includes(query.substring(2))) {
-                    d.classList.add("hidden");
-                } else {
-                    d.classList.remove("hidden");
-                }
+        for (let d of stateVars.songs) {
+            switch (type) {
+                case "advanced":
+                    procCont = d.dataset[advQuery[query.substring(0, 2)]].toLowerCase();
+                    filterSearch = query.substring(2);
+                    break;
+                case "general":
+                    procCont = d.dataset.title.toLowerCase();
+                    filterSearch = query;
+                    break;
             }
-        } else if (n.substring(0, 2) == "a:") {
-            // Search based on channel name
-            for (let d of stateVars.songs) {
-                if (!d.dataset.channel.toLowerCase().includes(query.substring(2))) {
-                    d.classList.add("hidden");
-                } else {
-                    d.classList.remove("hidden");
-                }
-            }
-        } else {
-            // Search based on songs name
-            for (let d of stateVars.songs) {
-                if (!d.dataset.title.toLowerCase().includes(query)) {
-                    d.classList.add("hidden");
-                } else {
-                    d.classList.remove("hidden");
-                }
+
+            if (!procCont.includes(filterSearch)) {
+                d.classList.add("hidden");
+            } else {
+                d.classList.remove("hidden");
             }
         }
+
+        // -- Old search function --
+        // if (n.substring(0, 2) == "p:") {
+        //     // Search based on position
+        //     for (let d of stateVars.songs) {
+        //         if (!d.dataset.pos.toLowerCase().includes(query.substring(2))) {
+        //             d.classList.add("hidden");
+        //         } else {
+        //             d.classList.remove("hidden");
+        //         }
+        //     }
+        // } else if (n.substring(0, 2) == "a:") {
+        //     // Search based on channel name
+        //     for (let d of stateVars.songs) {
+        //         if (!d.dataset.channel.toLowerCase().includes(query.substring(2))) {
+        //             d.classList.add("hidden");
+        //         } else {
+        //             d.classList.remove("hidden");
+        //         }
+        //     }
+        // } else {
+        //     // Search based on songs name
+        //     for (let d of stateVars.songs) {
+        //         if (!d.dataset.title.toLowerCase().includes(query)) {
+        //             d.classList.add("hidden");
+        //         } else {
+        //             d.classList.remove("hidden");
+        //         }
+        //     }
+        // }
     } else {
         stateElements.clearSearch.classList.add("hidden");
         stateElements.clearSearch.classList.remove("block");

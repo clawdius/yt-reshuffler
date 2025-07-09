@@ -41,7 +41,7 @@ function assignButtons() {
     // -- Search
     stateElements.searchInput.addEventListener("keyup", (e) => {
         if (!["Shift", "Alt", "Control"].includes(e.key)) {
-            const searchInput = debounce(search, 500);
+            const searchInput = debounce(search, 200);
             searchInput(e.target.value);
         }
     });
