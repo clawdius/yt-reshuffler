@@ -49,7 +49,25 @@ export function search(n) {
         stateElements.clearSearch.classList.add("block");
         stateElements.clearSearch.classList.remove("hidden");
 
-        let query = n.toLowerCase();
+        // const query = n.toLowerCase();
+        // const advQuery = {
+        //     "p:": "pos",
+        //     "a:": "channel"
+        // }
+
+        // let type = advQuery.hasOwnProperty(query.substring(0, 2)) ? "advanced" : "general";
+
+        // for (let d of stateVars.songs) {
+
+        //     let procCont;
+
+        //     switch (type) {
+        //         case "advanced":
+        //             procCont = query
+        //             break;
+        //     }
+        // }
+
         if (n.substring(0, 2) == "p:") {
             // Search based on position
             for (let d of stateVars.songs) {
@@ -156,6 +174,6 @@ export function textPurifier(text) {
 }
 
 export function channelCleaner(channel) {
-    if(channel.includes("- Topic")) return channel.replace(/- Topic/g, "");
+    if (channel.includes("- Topic")) return channel.replace(/- Topic/g, "");
     return channel;
 }

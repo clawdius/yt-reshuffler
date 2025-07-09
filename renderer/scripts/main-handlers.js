@@ -18,16 +18,16 @@ function assignButtons() {
     async function fetcherHandler() {
         stateElements.fetcher.removeEventListener("click", fetcherHandler);
 
-         // Weird pause placement, but ok
-         player.pauseVideo()
+        // Weird pause placement, but ok
+        player.pauseVideo();
 
-         // "Fetching musics" rich presence
-         if (stateVars.appSettings.useDiscord) {
-             window.richPresence.setActivity({
-                 title: stateVars.playlistSettings.playlistName,
-                 details: "Fetching musics from YouTube",
-             });
-         }
+        // "Fetching musics" rich presence
+        if (stateVars.appSettings.useDiscord) {
+            window.richPresence.setActivity({
+                title: stateVars.playlistSettings.playlistName,
+                details: "Fetching musics from YouTube",
+            });
+        }
 
         loader("on", "Fetching data from YouTube...");
         await window.playlistAPI.fetchDataFromYT(stateVars.playlistSettings.playlistID);
@@ -40,8 +40,10 @@ function assignButtons() {
 
     // -- Search
     stateElements.searchInput.addEventListener("keyup", (e) => {
-        const searchInput = debounce(search, 200);
-        searchInput(e.target.value);
+        if (!["Shift", "Alt", "Control"].includes(e.key)) {
+            const searchInput = debounce(search, 500);
+            searchInput(e.target.value);
+        }
     });
 
     // -- Clear Search
