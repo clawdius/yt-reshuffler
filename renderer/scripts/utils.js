@@ -56,21 +56,10 @@ export function search(n) {
         };
 
         let type = advQuery.hasOwnProperty(query.substring(0, 2)) ? "advanced" : "general";
-        let procCont, filterSearch;
+        let filterSearch = type === "advanced" ? query.substring(2) : query;
 
         for (let d of stateVars.songs) {
-            switch (type) {
-                case "advanced":
-                    procCont = d.dataset[advQuery[query.substring(0, 2)]].toLowerCase();
-                    filterSearch = query.substring(2);
-                    break;
-                case "general":
-                    procCont = d.dataset.title.toLowerCase();
-                    filterSearch = query;
-                    break;
-            }
-
-            if (!procCont.includes(filterSearch)) {
+            if (!d.dataset[type === "advanced" ? advQuery[query.substring(0, 2)] : "title"].toLowerCase().includes(filterSearch)) {
                 d.classList.add("hidden");
             } else {
                 d.classList.remove("hidden");
